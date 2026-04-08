@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Deutsch Tutor A1→A2</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇩🇪</text></svg>">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a1a;--paper:#fff;--surface:#f8f7f4;--border:#e5e5e0;--border-hover:#ccc;
+  --muted:#888;--success:#2e7d32;--success-bg:#e8f5e9;--success-border:#a5d6a7;
+  --warn:#b45309;--warn-bg:#fff8e1;--warn-border:#fcd34d;
+  --danger:#be123c;--danger-bg:#fce4ec;--danger-border:#f9a8d4;
+  --info:#1e40af;--info-bg:#eff6ff;--info-border:#93c5fd;
+  --accent:#1a1a1a;--radius:10px;--radius-lg:14px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--surface);color:var(--ink);min-height:100vh;-webkit-tap-highlight-color:transparent}
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--paper);box-shadow:0 0 0 1px var(--border)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes countdown{from{width:100%}to{width:0%}}
+.fade{animation:fadeUp .25s ease both}
+.spin{animation:spin 1s linear infinite;display:inline-block}
+
+/* ─── LAYOUT ─── */
+.hdr{padding:13px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);background:var(--paper);position:sticky;top:0;z-index:20}
+.scroll{padding-bottom:40px}
+.section-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;padding:10px 16px 5px}
+
+/* ─── TYPOGRAPHY ─── */
+.t1{font-size:18px;font-weight:700;letter-spacing:-.3px}
+.t2{font-size:14px;font-weight:600}
+.t3{font-size:13px;font-weight:600}
+.body{font-size:13px;line-height:1.75;color:var(--ink)}
+.muted{font-size:12px;color:var(--muted)}
+.em{color:var(--muted);font-style:italic}
+
+/* ─── CARDS ─── */
+.card{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-lg);padding:15px;margin:10px 16px}
+.card-flat{background:var(--surface);border-radius:var(--radius-lg);padding:15px;margin:8px 16px}
+.card-success{background:var(--success-bg);border:1px solid var(--success-border);border-radius:var(--radius);padding:12px 14px;margin:8px 0}
+.card-warn{background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:var(--radius);padding:12px 14px;margin:8px 0}
+.card-danger{background:var(--danger-bg);border:1px solid var(--danger-border);border-radius:var(--radius);padding:12px 14px;margin:8px 0}
+.card-info{background:var(--info-bg);border:1px solid var(--info-border);border-radius:var(--radius);padding:12px 14px;margin:8px 0}
+
+/* ─── BUTTONS ─── */
+.btn{display:block;width:100%;background:var(--paper);border:1px solid var(--border-hover);border-radius:var(--radius);padding:12px 16px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink);font-family:inherit;transition:background .1s;text-align:center;-webkit-appearance:none}
+.btn:hover{background:var(--surface)}
+.btn:active{transform:scale(.99)}
+.btn:disabled{opacity:.35;cursor:default;transform:none}
+.btn-dark{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn-dark:hover{background:#333;border-color:#333}
+.btn-success{background:var(--success-bg);color:var(--success);border-color:var(--success-border)}
+.btn-warn{background:var(--warn-bg);color:var(--warn);border-color:var(--warn-border)}
+.btn-sm{padding:8px 13px;font-size:12px;width:auto;display:inline-block}
+.btn-icon{background:none;border:none;cursor:pointer;font-size:16px;padding:4px;color:var(--muted)}
+.btn-icon:hover{color:var(--ink)}
+.back{background:none;border:none;cursor:pointer;font-size:20px;padding:0;color:var(--muted);font-family:inherit;line-height:1}
+.back:hover{color:var(--ink)}
+
+/* ─── TAGS / BADGES ─── */
+.tag{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.3px}
+.tag-foundation{background:#ede9fe;color:#6d28d9}
+.tag-phrases{background:#e0f2fe;color:#0369a1}
+.tag-a11{background:#dcfce7;color:#166534}
+.tag-a12{background:#fef3c7;color:#92400e}
+.tag-a2{background:#fce7f3;color:#9d174d}
+.tag-exam{background:#f3e8ff;color:#7c3aed}
+
+.dbadge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.d-e{background:#dcfce7;color:#166534}
+.d-m{background:#fef3c7;color:#92400e}
+.d-h{background:#fce7f3;color:#9d174d}
+.d-x{background:#f0f0ec;color:#555}
+.d-rf{background:var(--ink);color:var(--paper)}
+
+/* ─── PROGRESS ─── */
+.pbar{background:var(--surface);border-radius:4px;height:4px;overflow:hidden;margin:5px 0}
+.pfill{height:100%;border-radius:4px;background:var(--ink);transition:width .5s}
+.ex-dots{display:flex;gap:4px;padding:6px 16px 0}
+.ex-dot{flex:1;height:3px;border-radius:2px;transition:background .3s}
+.ex-dot.done{background:var(--success)}
+.ex-dot.active{background:var(--ink)}
+.ex-dot.fail{background:var(--danger)}
+.ex-dot.todo{background:var(--border)}
+
+/* ─── INPUTS ─── */
+input,textarea{background:var(--surface);border:1px solid var(--border-hover);border-radius:var(--radius);padding:11px 13px;font-size:13px;color:var(--ink);font-family:inherit;width:100%;outline:none;transition:border-color .15s;-webkit-appearance:none}
+input:focus,textarea:focus{border-color:var(--ink);background:var(--paper)}
+textarea{resize:none;min-height:78px}
+.row{display:flex;gap:8px;align-items:stretch}
+.mic-btn{background:var(--paper);border:1px solid var(--border-hover);border-radius:var(--radius);padding:12px 14px;cursor:pointer;font-size:16px;flex-shrink:0;transition:background .1s;-webkit-appearance:none}
+.mic-btn:hover{background:var(--surface)}
+.mic-btn.on{background:var(--danger-bg);border-color:var(--danger-border)}
+
+/* ─── UMLAUT TOOLBAR ─── */
+.umlaut-bar{display:flex;gap:4px;padding:4px 0 8px;flex-wrap:wrap}
+.umlaut-btn{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:14px;font-weight:700;cursor:pointer;color:var(--ink);font-family:inherit;min-width:38px;text-align:center;transition:background .1s}
+.umlaut-btn:hover{background:#e8e8e4;border-color:var(--border-hover)}
+.umlaut-btn:active{transform:scale(.95)}
+
+/* ─── LESSON CONTENT ─── */
+.lesson-h{font-size:13px;font-weight:700;margin:16px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border);color:var(--ink)}
+.lesson-body{font-size:13px;line-height:1.8;white-space:pre-line;color:var(--ink)}
+.vocab-row{display:flex;align-items:baseline;gap:8px;padding:5px 0;border-bottom:1px solid #f2f2ee}
+.vocab-row:last-child{border:none}
+.vocab-de{font-weight:700;min-width:46%;font-size:12px}
+.vocab-en{color:var(--muted);font-size:12px}
+.ex-row{padding:5px 0 5px 12px;border-left:2px solid var(--border);margin:3px 0}
+.ex-de{font-size:13px;font-weight:600}
+.ex-en{font-size:11px;color:var(--muted);font-style:italic;margin-top:2px}
+.phrase-row{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;gap:10px;align-items:flex-start}
+.phrase-row:last-child{border:none}
+.phrase-de{font-size:13px;font-weight:600;flex:1}
+.phrase-en{font-size:12px;color:var(--muted);flex:1}
+.tip-box{background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius);padding:12px 14px;margin:8px 0;font-size:12px;line-height:1.6}
+.mistake-box{background:#fef2f2;border:1px solid #fca5a5;border-radius:var(--radius);padding:12px 14px;margin:6px 0;font-size:12px;line-height:1.6}
+.summary-item{padding:5px 0 5px 16px;border-left:3px solid var(--ink);margin:4px 0;font-size:13px;line-height:1.55}
+
+/* ─── FILL IN GAPS ─── */
+.gap-sentence{font-size:15px;font-weight:600;line-height:1.5;margin-bottom:8px}
+.gap-hint{font-size:11px;color:var(--muted);margin-bottom:6px}
+.gap-revealed{background:var(--success-bg);border:1px solid var(--success-border);border-radius:6px;padding:8px 12px;font-size:13px;font-weight:700;color:var(--success);margin-top:6px}
+.gap-wrong-hint{background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:6px;padding:8px 12px;font-size:13px;margin-top:6px;color:var(--warn)}
+
+/* ─── EXERCISE GRADING ─── */
+.grade-box{border-radius:var(--radius);padding:12px 14px;font-size:13px;animation:fadeUp .2s ease;margin:8px 0}
+.grade-ok{background:var(--success-bg);border:1px solid var(--success-border);color:var(--success)}
+.grade-cl{background:var(--warn-bg);border:1px solid var(--warn-border);color:var(--warn)}
+.grade-no{background:var(--danger-bg);border:1px solid var(--danger-border);color:var(--danger)}
+.grade-label{font-weight:700;margin-bottom:4px;font-size:14px}
+.grade-correction{font-weight:700;margin-top:6px;font-size:13px}
+
+/* ─── MULTIPLE CHOICE ─── */
+.mc-opt{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:11px 14px;font-size:13px;cursor:pointer;transition:background .1s;margin-bottom:6px;width:100%;text-align:left;font-family:inherit;color:var(--ink);-webkit-appearance:none}
+.mc-opt:hover{background:#f0f0ec;border-color:var(--border-hover)}
+.mc-ok{background:var(--success-bg)!important;border-color:var(--success-border)!important;color:var(--success)!important;font-weight:600}
+.mc-no{background:var(--danger-bg)!important;border-color:var(--danger-border)!important;color:var(--danger)!important}
+
+/* ─── RAPID FIRE ─── */
+.rf-timer{height:5px;background:var(--surface);border-radius:3px;overflow:hidden;margin:0 16px 8px}
+.rf-fill{height:100%;background:var(--success);transition:width .5s linear}
+.rf-fill.urgent{background:var(--danger)}
+.rf-score{font-size:26px;font-weight:700;text-align:center}
+.rf-result{text-align:center;padding:30px 20px}
+
+/* ─── CONVERSATION ─── */
+.chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 62px);max-height:680px}
+.chat-msgs{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:8px}
+.bubble-ai{background:var(--surface);border:1px solid var(--border);border-radius:13px 13px 13px 3px;padding:11px 14px;font-size:13px;line-height:1.65;max-width:86%;align-self:flex-start;animation:fadeUp .2s ease}
+.bubble-user{background:var(--ink);color:var(--paper);border-radius:13px 13px 3px 13px;padding:11px 14px;font-size:13px;line-height:1.65;max-width:86%;align-self:flex-end;animation:fadeUp .2s ease}
+.corr{background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:0 0 8px 8px;padding:7px 12px;font-size:11px;color:var(--warn);max-width:86%;align-self:flex-start;margin-top:-5px}
+.tts-btn{background:none;border:none;cursor:pointer;font-size:11px;color:var(--muted);padding:2px 0;font-family:inherit}
+.tts-btn:hover{color:var(--ink)}
+.typing{display:flex;gap:4px;padding:4px 0;align-items:center}
+.tydot{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:blink 1.2s ease-in-out infinite}
+.chat-input-area{padding:10px 16px;border-top:1px solid var(--border);background:var(--paper);display:flex;gap:8px;flex-shrink:0}
+
+/* ─── HOME SCREEN ─── */
+.topic-item{display:flex;align-items:flex-start;gap:11px;padding:12px 16px;border-bottom:1px solid #f2f2ee;cursor:pointer;transition:background .1s;-webkit-tap-highlight-color:transparent}
+.topic-item:hover{background:#fafaf8}
+.topic-item.locked{opacity:.35;cursor:default}
+.topic-item.locked:hover{background:transparent}
+.topic-num{width:30px;height:30px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;border:1px solid var(--border)}
+.topic-num.done{background:var(--success-bg);color:var(--success);border-color:var(--success-border)}
+.topic-num.active{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.topic-num.debt{background:var(--danger-bg);color:var(--danger);border-color:var(--danger-border)}
+.debt-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:var(--danger);background:var(--danger-bg);border:1px solid var(--danger-border);border-radius:12px;padding:2px 7px;margin-left:6px}
+
+/* ─── LOADING ─── */
+.loader{text-align:center;padding:40px 20px;color:var(--muted)}
+.loader-icon{font-size:24px;animation:spin 1s linear infinite;display:inline-block;margin-bottom:10px}
+.provider-tag{font-size:10px;color:var(--muted);text-align:right;padding:2px 16px;margin-top:-4px}
+
+/* ─── COMPLETE SCREEN ─── */
+.complete-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 24px;text-align:center;gap:12px;min-height:500px;animation:fadeUp .3s ease}
+.big-emoji{font-size:52px}
+.stat-row{display:flex;gap:24px;margin:10px 0}
+.stat{text-align:center}
+.stat-n{font-size:28px;font-weight:700}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border-hover);border-radius:3px}
+</style>
+</head>
+<body>
+<div id="app" class="app"></div>
+<!-- Curriculum data loads first so window.CURRICULUM_DATA is set before module executes -->
+<script src="/curriculum-data.js"></script>
+<script type="module">
+// ─── CURRICULUM IMPORT ───────────────────────────────────────────────────────
+// Inline the curriculum for deployment (Vercel doesn't support ES module imports in plain HTML)
+// Full curriculum data inlined below
+
+const EXERCISE_COUNTS = { easy:10, medium:20, hard:30, extraHard:40, rapidFire:30 };
+const PASS_THRESHOLD = 0.8;
+const RAPID_FIRE_TIME = 15 * 60;
+const DEBT_BLOCK_DISTANCE = 2;
+
+// ─── CURRICULUM (condensed from curriculum.js for inline use) ─────────────────
+// curriculum-data.js is loaded via <script> tag before this module, so
+// window.CURRICULUM_DATA is guaranteed to be set when we get here.
+let CURRICULUM = window.CURRICULUM_DATA || [];
+
+async function loadCurriculum() {
+  // Already loaded synchronously via script tag — nothing to do
+  if (CURRICULUM.length) return;
+  // Last-resort safety fetch (should never be needed in normal deployment)
+  try {
+    const r = await fetch('/curriculum-data.js');
+    if (r.ok) console.warn('curriculum-data.js fetched via fallback — check script tag order');
+  } catch(e) {
+    console.error('Curriculum failed to load:', e);
+  }
+}
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+const PROG_KEY = 'dt-v3';
+function loadProg() {
+  try { return JSON.parse(localStorage.getItem(PROG_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveProg(p) { localStorage.setItem(PROG_KEY, JSON.stringify(p)); }
+
+const LESSON_CACHE_KEY = 'dt-lessons-v3';
+function loadLessonCache() {
+  try { return JSON.parse(localStorage.getItem(LESSON_CACHE_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveLessonCache(cache) { localStorage.setItem(LESSON_CACHE_KEY, JSON.stringify(cache)); }
+
+let STATE = {
+  view: 'home',
+  lesson: null,
+  phase: 'lesson', // lesson | gap | easy | medium | hard | extraHard | conv | rapidFire | complete | rfResult
+  prog: loadProg(),
+  lessonCache: loadLessonCache(),
+  generatedLesson: null,
+
+  // Exercise state
+  exercises: [], exIdx: 0, answer: '', grade: null, grading: false, exLoading: false,
+  exScores: [], // track each answer result
+
+  // Fill in gaps state
+  gapIdx: 0, gapAnswer: '', gapRevealed: false, gapScore: 0,
+
+  // Conversation state
+  msgs: [], convInput: '', convLoading: false,
+
+  // Rapid fire state
+  rfQuestions: [], rfIdx: 0, rfAnswer: '', rfAnswers: [], rfTimeLeft: RAPID_FIRE_TIME, rfTimer: null, rfLoading: false,
+
+  // Voice
+  listening: false, speaking: false, voiceOk: false,
+  lastInput: null, // ref to last active input for umlaut insertion
+};
+
+// ─── PROGRESS HELPERS ────────────────────────────────────────────────────────
+function passed(id, diff) { return !!(STATE.prog.passed?.[id]?.[diff]); }
+function topicDone(id) { return ['easy','medium','hard','extraHard','rapidFire'].every(d => passed(id, d)); }
+function setPass(id, diff) {
+  const p = STATE.prog.passed || {};
+  if (!p[id]) p[id] = {};
+  p[id][diff] = true;
+  STATE.prog.passed = p;
+  saveProg(STATE.prog);
+}
+function hasDebt(id) { return !!(STATE.prog.debts?.[id]); }
+function addDebt(id) {
+  const d = STATE.prog.debts || {};
+  d[id] = true;
+  STATE.prog.debts = d;
+  saveProg(STATE.prog);
+}
+function clearDebt(id) {
+  if (STATE.prog.debts?.[id]) {
+    delete STATE.prog.debts[id];
+    saveProg(STATE.prog);
+  }
+}
+function isDebtBlocked(lesson) {
+  // Check if any lesson within DEBT_BLOCK_DISTANCE before this one has unpaid RF debt
+  const idx = CURRICULUM.indexOf(lesson);
+  for (let i = Math.max(0, idx - DEBT_BLOCK_DISTANCE); i < idx; i++) {
+    const prev = CURRICULUM[i];
+    if (prev && hasDebt(prev.id)) return prev;
+  }
+  return null;
+}
+function isLocked(lesson) {
+  const idx = CURRICULUM.indexOf(lesson);
+  if (idx === 0) return false;
+  const prev = CURRICULUM[idx - 1];
+  return prev && !topicDone(prev.id);
+}
+
+// ─── VOICE ────────────────────────────────────────────────────────────────────
+let gVoice = null;
+function initVoice() {
+  if (window.SpeechRecognition || window.webkitSpeechRecognition) STATE.voiceOk = true;
+  const lv = () => { gVoice = window.speechSynthesis?.getVoices().find(v => v.lang.startsWith('de')) || null; };
+  lv();
+  window.speechSynthesis?.addEventListener('voiceschanged', lv);
+}
+function speak(txt) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(txt);
+  u.lang = 'de-DE'; u.rate = 0.85;
+  if (gVoice) u.voice = gVoice;
+  u.onstart = () => { STATE.speaking = true; render(); };
+  u.onend = () => { STATE.speaking = false; render(); };
+  window.speechSynthesis.speak(u);
+}
+let recog = null;
+function startListen(cb) {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return;
+  recog = new SR(); recog.lang = 'de-DE'; recog.continuous = false; recog.interimResults = false;
+  recog.onresult = e => { cb(e.results[0][0].transcript); STATE.listening = false; render(); };
+  recog.onerror = () => { STATE.listening = false; render(); };
+  recog.onend = () => { STATE.listening = false; render(); };
+  recog.start(); STATE.listening = true; render();
+}
+
+// ─── API ──────────────────────────────────────────────────────────────────────
+let lastProvider = '';
+async function callApi(system, user, history = []) {
+  const msgs = history.length ? [...history, {role:'user',content:user}] : [{role:'user',content:user}];
+  const r = await fetch('/api/chat', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ system, messages: msgs, max_tokens: 2000 })
+  });
+  const d = await r.json();
+  if (d.provider) lastProvider = d.provider;
+  return d.content?.[0]?.text || '';
+}
+
+// ─── LESSON GENERATION ────────────────────────────────────────────────────────
+async function generateLesson(lesson) {
+  // Check cache first
+  const cache = STATE.lessonCache;
+  if (cache[lesson.id]) return cache[lesson.id];
+
+  const outline = lesson.aiOutline;
+  const grammar = outline.grammar?.join('\n• ');
+  const vocab = outline.vocab?.join('\n• ');
+  const examples = outline.examples?.join('\n• ');
+  const mistakes = outline.mistakes?.join('\n• ');
+
+  const generated = await callApi(
+    `You are writing a comprehensive German language textbook lesson for a motivated adult learner. 
+    This must be genuinely thorough — equivalent to a full textbook chapter, not a summary.
+    Use these EXACT section markers: [INTRO] [SECTION:Title] (repeat for each section) [VOCAB] [EXAMPLES] [SUMMARY] [MISTAKES] [TIPS]
+    
+    VOCAB format: German term with article/plural — English meaning (one per line, 20-30 items minimum)
+    EXAMPLES format: German sentence — English translation (one per line, 8-10 minimum)  
+    SUMMARY format: bullet points starting with • (5-6 items)
+    MISTAKES format: numbered list 1. 2. 3. (3-5 items, specific and practical)
+    TIPS format: numbered list 1. 2. 3. (3 items, genuine insider tips)
+    
+    Be comprehensive. Cover every nuance. Include tables where relevant. Use real examples. Write as if a student's exam depends on this.`,
+    `Write a comprehensive textbook lesson on: "${lesson.title}" (${lesson.unit})
+    
+    Grammar to cover (cover ALL of these thoroughly):
+    • ${grammar}
+    
+    Vocabulary (include ALL of these, add more if relevant):
+    • ${vocab}
+    
+    Example sentences to include (include ALL of these plus more):
+    • ${examples}
+    
+    Common mistakes to address:
+    • ${mistakes}
+    
+    Context: ${lesson.intro}
+    
+    Write the complete lesson now. Be thorough. Students need to be exam-ready after reading this.`
+  );
+
+  // Cache it
+  cache[lesson.id] = generated;
+  saveLessonCache(cache);
+  return generated;
+}
+
+// ─── EXERCISE GENERATION ─────────────────────────────────────────────────────
+async function generateExercises(lesson, diff, count) {
+  const diffDesc = {
+    easy: `${count} multiple-choice questions. 4 options (A/B/C/D). answer field = correct letter. options = array of 4 strings. Test recognition and comprehension.`,
+    medium: `${count} guided production exercises. Translation or fill-in-blank WITH a word bank hint (include answer in hint). hint = "Word bank: x, y, z". options = [].`,
+    hard: `${count} free production exercises. Translation English→German with NO hints. hint = "". options = []. Vary types: translate, conjugate, build sentences, fix errors.`,
+    extraHard: `${count} challenging exercises mixing grammar concepts. More complex sentences, tricky cases, combinations of rules covered in this lesson. NO hints. Include some error-correction questions where student must identify and fix a mistake.`,
+    rapidFire: `${count} rapid-fire mixed questions covering ALL aspects of this lesson. Mix of: multiple-choice (answer=letter, options=[4 items]), translation, fill-blank, error-correction. Vary difficulty within the set. Keep questions short and punchy for timed conditions.`
+  };
+
+  const lessonContent = STATE.generatedLesson || lesson.intro;
+  const vocabPreview = lesson.vocab?.slice(0, 10).map(v => Array.isArray(v) ? v[0] : v).join(', ') || '';
+
+  const raw = await callApi(
+    `You generate German language exercises. Return ONLY valid JSON array. No markdown. No text outside JSON.
+     Each object MUST have exactly: {question: string, answer: string, hint: string, options: array}
+     For multiple choice: answer is ONE letter A/B/C/D. options is array of exactly 4 strings.
+     For all other types: options is empty array []. hint is word bank or "".`,
+    `Generate ${count} ${diff} exercises for German lesson: "${lesson.title}"
+     Lesson content preview: ${lessonContent?.slice(0, 500) || lesson.intro}
+     Key vocabulary: ${vocabPreview}
+     Type specification: ${diffDesc[diff]}
+     Make exercises practical and directly test what was taught. Vary the question formats.`
+  );
+
+  try {
+    const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [{
+      question: `Translate to German: "I am learning German."`,
+      answer: diff === 'easy' ? 'B' : 'Ich lerne Deutsch.',
+      hint: diff === 'medium' ? 'Word bank: Ich, lerne, Deutsch' : '',
+      options: diff === 'easy' ? ['Ich bin Deutsch', 'Ich lerne Deutsch', 'Ich bin Student', 'Ich habe Deutsch'] : []
+    }];
+  }
+}
+
+async function gradeAnswer(question, expected, given) {
+  const raw = await callApi(
+    'Grade a German language exercise. Return ONLY valid JSON: {grade:"correct"|"almost"|"incorrect", explanation: string (1 encouraging sentence, max 15 words), correction: string}. Be lenient for minor spelling/capitalisation errors.',
+    `Question: "${question}". Expected: "${expected}". Student wrote: "${given}".`
+  );
+  try {
+    return JSON.parse(raw.replace(/```json|```/g, '').trim());
+  } catch {
+    return { grade: 'incorrect', explanation: 'Could not evaluate. Correct answer shown below.', correction: expected };
+  }
+}
+
+// ─── RAPID FIRE TIMER ─────────────────────────────────────────────────────────
+function startRFTimer() {
+  STATE.rfTimeLeft = RAPID_FIRE_TIME;
+  clearInterval(STATE.rfTimer);
+  STATE.rfTimer = setInterval(() => {
+    STATE.rfTimeLeft--;
+    // Update just the timer bar without full re-render
+    const fill = document.querySelector('.rf-fill');
+    if (fill) {
+      const pct = (STATE.rfTimeLeft / RAPID_FIRE_TIME) * 100;
+      fill.style.width = pct + '%';
+      if (pct < 20) fill.classList.add('urgent');
+    }
+    const timeEl = document.querySelector('.rf-time');
+    if (timeEl) {
+      const m = Math.floor(STATE.rfTimeLeft / 60);
+      const s = STATE.rfTimeLeft % 60;
+      timeEl.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    }
+    if (STATE.rfTimeLeft <= 0) {
+      clearInterval(STATE.rfTimer);
+      finishRapidFire(false);
+    }
+  }, 1000);
+}
+
+// ─── PHASE TRANSITIONS ────────────────────────────────────────────────────────
+const PHASE_ORDER = ['lesson', 'gap', 'easy', 'medium', 'hard', 'extraHard', 'conv', 'rapidFire'];
+
+async function startPhase(phase) {
+  STATE.phase = phase;
+  STATE.grade = null; STATE.answer = ''; STATE.exIdx = 0; STATE.exScores = [];
+
+  if (phase === 'gap') {
+    STATE.gapIdx = 0; STATE.gapAnswer = ''; STATE.gapRevealed = false; STATE.gapScore = 0;
+    render();
+  } else if (['easy','medium','hard','extraHard'].includes(phase)) {
+    STATE.exLoading = true; render();
+    const count = EXERCISE_COUNTS[phase];
+    STATE.exercises = await generateExercises(STATE.lesson, phase, count);
+    STATE.exLoading = false; render();
+  } else if (phase === 'conv') {
+    STATE.msgs = []; STATE.convLoading = true; render();
+    try {
+      const opener = await callApi(
+        `You are Max, a warm German tutor. Topic: "${STATE.lesson?.title}". Keep German A1/A2 level. 
+        ALWAYS end with "📝 Correction:" noting grammar/vocab mistakes or "Alles gut! ✓" if no errors.
+        Include English translations in brackets for all German phrases.`,
+        'Start the conversation with a warm greeting related to today\'s topic and one simple question. Include English translation.'
+      );
+      STATE.msgs = [{role:'assistant', content: opener}];
+    } catch {
+      STATE.msgs = [{role:'assistant', content:'Hallo! Wie geht es dir? (Hello! How are you?)'}];
+    }
+    STATE.convLoading = false; render();
+  } else if (phase === 'rapidFire') {
+    STATE.rfLoading = true; render();
+    try {
+      STATE.rfQuestions = await generateExercises(STATE.lesson, 'rapidFire', EXERCISE_COUNTS.rapidFire);
+    } catch { STATE.rfQuestions = []; }
+    STATE.rfIdx = 0; STATE.rfAnswer = ''; STATE.rfAnswers = [];
+    STATE.rfLoading = false;
+    render();
+    setTimeout(() => startRFTimer(), 500);
+  } else {
+    render();
+  }
+}
+
+function nextPhase() {
+  const idx = PHASE_ORDER.indexOf(STATE.phase);
+  const next = PHASE_ORDER[idx + 1];
+  if (next) startPhase(next);
+  else finishSession();
+}
+
+function finishSession() {
+  clearInterval(STATE.rfTimer);
+  const done = STATE.prog.completed || [];
+  if (topicDone(STATE.lesson.id) && !done.includes(STATE.lesson.id)) {
+    done.push(STATE.lesson.id);
+  }
+  const today = new Date().toDateString();
+  const streak = (STATE.prog.streak || 0) + (STATE.prog.lastDay === today ? 0 : 1);
+  STATE.prog = { ...STATE.prog, completed: done, streak, lastDay: today };
+  saveProg(STATE.prog);
+  STATE.view = 'complete';
+  render();
+}
+
+function finishRapidFire(timeUp = false) {
+  clearInterval(STATE.rfTimer);
+  const correct = STATE.rfAnswers.filter(a => a.correct).length;
+  const total = STATE.rfQuestions.length;
+  const pct = total > 0 ? correct / total : 0;
+  const passed_rf = pct >= PASS_THRESHOLD;
+
+  if (passed_rf) {
+    setPass(STATE.lesson.id, 'rapidFire');
+    clearDebt(STATE.lesson.id);
+  } else {
+    addDebt(STATE.lesson.id);
+  }
+
+  STATE.phase = 'rfResult';
+  STATE.rfResult = { correct, total, passed: passed_rf, timeUp };
+  render();
+}
+
+// ─── EXERCISE FLOW ────────────────────────────────────────────────────────────
+async function checkAnswer() {
+  if (!STATE.answer.trim() || STATE.grading) return;
+  STATE.grading = true; render();
+
+  const ex = STATE.exercises[STATE.exIdx];
+  const g = await gradeAnswer(ex.question, ex.answer, STATE.answer);
+  STATE.grade = g;
+  STATE.exScores.push(g.grade !== 'incorrect');
+  if (g.grade !== 'incorrect') speak(ex.answer);
+  STATE.grading = false; render();
+}
+
+function mcSelect(opt, idx) {
+  const ex = STATE.exercises[STATE.exIdx];
+  const letter = ['A','B','C','D'][idx];
+  const correct = letter === ex.answer;
+  STATE.grade = {
+    grade: correct ? 'correct' : 'incorrect',
+    explanation: correct ? 'Richtig!' : 'Not quite — correct answer highlighted.',
+    correction: ex.answer
+  };
+  STATE.exScores.push(correct);
+  if (correct) speak(ex.options[['A','B','C','D'].indexOf(ex.answer)]);
+  render();
+}
+
+function nextExercise() {
+  if (STATE.exIdx + 1 >= STATE.exercises.length) {
+    // Calculate score
+    const score = STATE.exScores.filter(Boolean).length / STATE.exercises.length;
+    if (score >= PASS_THRESHOLD) {
+      setPass(STATE.lesson.id, STATE.phase);
+      nextPhase();
+    } else {
+      // Failed — retry with fresh exercises
+      startPhase(STATE.phase);
+    }
+  } else {
+    STATE.exIdx++; STATE.grade = null; STATE.answer = ''; render();
+  }
+}
+
+// ─── GAP FILL ─────────────────────────────────────────────────────────────────
+function checkGap() {
+  const lesson = STATE.generatedLesson ? null : STATE.lesson;
+  const gaps = STATE.lesson.fillGaps;
+  if (!gaps) { startPhase('easy'); return; }
+  const gap = gaps[STATE.gapIdx];
+  const correct = STATE.gapAnswer.trim().toLowerCase() === gap.answer.toLowerCase();
+  if (correct) STATE.gapScore++;
+  STATE.gapRevealed = true;
+  render();
+}
+
+function nextGap() {
+  const gaps = STATE.lesson.fillGaps;
+  if (!gaps) { startPhase('easy'); return; }
+  STATE.gapRevealed = false; STATE.gapAnswer = '';
+  if (STATE.gapIdx + 1 >= gaps.length) {
+    // Phrase breaks: all gaps done → mark complete and go to completion screen
+    if (STATE.lesson.isPhrases) {
+      ['easy','medium','hard','extraHard','rapidFire'].forEach(d => setPass(STATE.lesson.id, d));
+      const done = STATE.prog.completed || [];
+      if (!done.includes(STATE.lesson.id)) done.push(STATE.lesson.id);
+      const today = new Date().toDateString();
+      const streak = (STATE.prog.streak || 0) + (STATE.prog.lastDay === today ? 0 : 1);
+      STATE.prog = {...STATE.prog, completed: done, streak, lastDay: today};
+      saveProg(STATE.prog);
+      STATE.view = 'complete'; render();
+    } else {
+      startPhase('easy');
+    }
+  } else {
+    STATE.gapIdx++; render();
+  }
+}
+
+// ─── CONVERSATION ──────────────────────────────────────────────────────────────
+async function sendConv() {
+  if (!STATE.convInput.trim() || STATE.convLoading) return;
+  const msg = STATE.convInput.trim();
+  const newMsgs = [...STATE.msgs, {role:'user',content:msg}];
+  STATE.convInput = ''; STATE.msgs = newMsgs; STATE.convLoading = true; render();
+
+  try {
+    const r = await fetch('/api/chat', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        max_tokens: 800,
+        system: `You are Max, a warm German A1/A2 tutor. Topic: "${STATE.lesson?.title}". Keep German simple. 
+          ALWAYS end with "📝 Correction:" noting mistakes or "Alles gut! ✓". Include English in brackets.`,
+        messages: newMsgs.map(m => ({role:m.role,content:m.content}))
+      })
+    });
+    const d = await r.json();
+    STATE.msgs = [...newMsgs, {role:'assistant',content:d.content?.[0]?.text||'...'}];
+  } catch {
+    STATE.msgs = [...newMsgs, {role:'assistant',content:'Entschuldigung! Something went wrong.'}];
+  }
+  STATE.convLoading = false; render();
+}
+
+// ─── UMLAUT TOOLBAR ───────────────────────────────────────────────────────────
+function insertUmlaut(char) {
+  const el = STATE.lastInput || document.querySelector('input:focus, textarea:focus');
+  if (!el) return;
+  const start = el.selectionStart || el.value.length;
+  const end = el.selectionEnd || el.value.length;
+  el.value = el.value.slice(0, start) + char + el.value.slice(end);
+  el.selectionStart = el.selectionEnd = start + char.length;
+  el.focus();
+  el.dispatchEvent(new Event('input', {bubbles:true}));
+}
+
+function umlauts() {
+  return `<div class="umlaut-bar">
+    ${['ä','ö','ü','Ä','Ö','Ü','ß'].map(c => `<button class="umlaut-btn" onclick="insertUmlaut('${c}')">${c}</button>`).join('')}
+  </div>`;
+}
+
+// ─── PARSE LESSON CONTENT ─────────────────────────────────────────────────────
+function parseLessonContent(text, lesson) {
+  // ── phrases[] format (p1, p2 — older format) ──────────────────────────────
+  if (lesson.phrases && !lesson.sections) {
+    let html = `<p class="body" style="color:var(--muted);margin-bottom:14px">${lesson.intro}</p>`;
+    html += `<div class="lesson-h">💬 Key Phrases</div><div>`;
+    lesson.phrases.forEach(p => {
+      html += `<div class="ex-row"><div class="ex-de">${p.de}</div><div class="ex-en">${p.en}</div></div>`;
+    });
+    html += `</div>`;
+    if (lesson.summary?.length) {
+      html += `<div class="lesson-h">📝 Quick Summary</div>`;
+      lesson.summary.forEach(s => html += `<div class="summary-item">• ${s}</div>`);
+    }
+    if (lesson.mistakes?.length) {
+      html += `<div class="lesson-h">⚠️ Common Mistakes</div>`;
+      lesson.mistakes.forEach((m,i) => html += `<div class="mistake-box">${i+1}. ${m}</div>`);
+    }
+    if (lesson.tips?.length) {
+      html += `<div class="lesson-h">💡 Pro Tips</div>`;
+      lesson.tips.forEach((t,i) => html += `<div class="tip-box">${i+1}. ${t}</div>`);
+    }
+    return html;
+  }
+
+  // ── sections[] format (all modern lessons) ────────────────────────────────
+    let html = '';
+    html += `<p class="body" style="color:var(--muted);margin-bottom:14px">${lesson.intro}</p>`;
+    if (lesson.cognates?.length) {
+      html += `<div class="lesson-h">German–English Cognates</div><div style="columns:2;gap:12px">`;
+      lesson.cognates.forEach(([d,e]) => html += `<div class="vocab-row"><span class="vocab-de">${d}</span><span class="vocab-en">${e}</span></div>`);
+      html += '</div>';
+    }
+    lesson.sections.forEach(s => {
+      html += `<div class="lesson-h">${s.h}</div><div class="lesson-body">${s.body.replace(/\n/g,'<br>')}</div>`;
+    });
+    if (lesson.vocab?.length) {
+      html += `<div class="lesson-h">📖 Key Vocabulary</div><div>`;
+      lesson.vocab.forEach(([d,e]) => html += `<div class="vocab-row"><span class="vocab-de">${d}</span><span class="vocab-en">${e}</span></div>`);
+      html += '</div>';
+    }
+    if (lesson.examples?.length) {
+      html += `<div class="lesson-h">💬 Example Sentences</div><div>`;
+      lesson.examples.forEach(([d,e]) => html += `<div class="ex-row"><div class="ex-de">${d}</div><div class="ex-en">${e}</div></div>`);
+      html += '</div>';
+    }
+    if (lesson.summary?.length) {
+      html += `<div class="lesson-h">📝 Quick Summary</div>`;
+      lesson.summary.forEach(s => html += `<div class="summary-item">• ${s}</div>`);
+    }
+    if (lesson.mistakes?.length) {
+      html += `<div class="lesson-h">⚠️ Common Mistakes</div>`;
+      lesson.mistakes.forEach((m,i) => html += `<div class="mistake-box">${i+1}. ${m}</div>`);
+    }
+    if (lesson.tips?.length) {
+      html += `<div class="lesson-h">💡 Pro Tips</div>`;
+      lesson.tips.forEach((t,i) => html += `<div class="tip-box">${i+1}. ${t}</div>`);
+    }
+    return html;
+  }
+
+  // AI-generated text path (legacy — aiOutline is null for all lessons, but kept for safety)
+  if (!text) return `<p class="body">${lesson.intro || 'Loading lesson...'}</p>`;
+
+  let html = '';
+  const sections = text.split(/\[(INTRO|SECTION:[^\]]+|VOCAB|EXAMPLES|SUMMARY|MISTAKES|TIPS)\]/);
+
+  for (let i = 1; i < sections.length; i += 2) {
+    const key = sections[i];
+    const content = (sections[i+1] || '').trim();
+
+    if (key === 'INTRO') {
+      html += `<p class="body" style="color:var(--muted);margin-bottom:14px">${content}</p>`;
+    } else if (key.startsWith('SECTION:')) {
+      const title = key.replace('SECTION:', '');
+      html += `<div class="lesson-h">${title}</div>`;
+      html += `<div class="lesson-body">${content}</div>`;
+    } else if (key === 'VOCAB') {
+      html += `<div class="lesson-h">Key Vocabulary</div><div>`;
+      content.split('\n').filter(l => l.includes('—')).forEach(line => {
+        const [de, en] = line.split('—');
+        html += `<div class="vocab-row"><span class="vocab-de">${(de||'').trim()}</span><span class="vocab-en">${(en||'').trim()}</span></div>`;
+      });
+      html += `</div>`;
+    } else if (key === 'EXAMPLES') {
+      html += `<div class="lesson-h">Example Sentences</div><div>`;
+      content.split('\n').filter(l => l.includes('—')).forEach(line => {
+        const [de, en] = line.split('—');
+        html += `<div class="ex-row"><div class="ex-de">${(de||'').trim()}</div><div class="ex-en">${(en||'').trim()}</div></div>`;
+      });
+      html += `</div>`;
+    } else if (key === 'SUMMARY') {
+      html += `<div class="lesson-h">Quick Summary</div>`;
+      content.split('\n').filter(l => l.startsWith('•')).forEach(line => {
+        html += `<div class="summary-item">${line.replace('•','').trim()}</div>`;
+      });
+    } else if (key === 'MISTAKES') {
+      html += `<div class="lesson-h">⚠️ Common Mistakes</div>`;
+      content.split('\n').filter(l => /^\d+\./.test(l)).forEach(line => {
+        html += `<div class="mistake-box">${line}</div>`;
+      });
+    } else if (key === 'TIPS') {
+      html += `<div class="lesson-h">💡 Pro Tips</div>`;
+      content.split('\n').filter(l => /^\d+\./.test(l)).forEach(line => {
+        html += `<div class="tip-box">${line}</div>`;
+      });
+    }
+  }
+
+  return html || `<p>${lesson.intro}</p>`;
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function render() {
+  const app = document.getElementById('app');
+  const { view, lesson, phase, prog } = STATE;
+  const completed = prog.completed || [];
+  const streak = prog.streak || 0;
+
+  // ── HOME ────────────────────────────────────────────────────────────────────
+  if (view === 'home') {
+    if (!CURRICULUM.length) {
+      app.innerHTML = `<div class="loader"><div class="loader-icon">⚙️</div><div>Loading curriculum...</div></div>`;
+      return;
+    }
+    const pct = Math.round((completed.length / CURRICULUM.filter(l => !l.isPhrases && l.level !== 'exam').length) * 100);
+    const nextLesson = CURRICULUM.find(l => !topicDone(l.id) && !l.isExam) || CURRICULUM[0];
+
+    app.innerHTML = `<div class="scroll fade">
+      <div class="hdr">
+        <div style="flex:1">
+          <div class="t1">🇩🇪 Deutsch Tutor</div>
+          <div class="muted">A1.1 → A1.2 → A2 Complete</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:22px;font-weight:700;color:#d97706">${streak}</div>
+          <div class="muted" style="font-size:10px">streak 🔥</div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+          <span class="muted">Progress to A2</span>
+          <span style="font-size:12px;font-weight:700">${completed.length} lessons done</span>
+        </div>
+        <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
+      </div>
+      <div id="next-card" class="card" style="cursor:pointer;border-style:dashed;border-width:2px;margin-top:4px">
+        <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin-bottom:8px">Continue learning</div>
+        <div class="t2" style="margin-bottom:3px">${nextLesson.title}</div>
+        <div class="muted" style="margin-bottom:10px">${nextLesson.unit}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          ${['easy','medium','hard','extraHard','rapidFire'].map(d => {
+            const lbl = d === 'extraHard' ? 'Extra' : d === 'rapidFire' ? '⚡RF' : d.charAt(0).toUpperCase() + d.slice(1);
+            const done = passed(nextLesson.id, d);
+            return `<span class="dbadge ${done ? 'd-e' : d === 'easy' ? 'd-e' : d === 'medium' ? 'd-m' : d === 'hard' ? 'd-h' : d === 'extraHard' ? 'd-x' : 'd-rf'}" style="${done ? '' : 'opacity:.3'}">${done ? '✓' : ''} ${lbl}</span>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="section-title">All lessons</div>
+      ${CURRICULUM.map((l, idx) => {
+        const done = topicDone(l.id);
+        const locked = isLocked(l);
+        const debtBlock = !locked && isDebtBlocked(l);
+        const isNext = !done && !locked;
+        const debt = hasDebt(l.id);
+        const icon = l.isPhrases ? '🗣️' : l.isExam ? '🏆' : '';
+
+        return `<div class="topic-item${locked ? ' locked' : ''}" data-lid="${l.id}">
+          <div class="topic-num${done ? ' done' : isNext && !locked ? ' active' : debt ? ' debt' : ''}">
+            ${done ? '✓' : l.isPhrases ? '💬' : l.isExam ? '🏆' : idx + 1}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="t3" style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+              ${icon}${l.title}
+              ${debt ? '<span class="debt-badge">⚡ RF debt</span>' : ''}
+              ${debtBlock ? `<span class="debt-badge">🔒 clear L${debtBlock.id} first</span>` : ''}
+            </div>
+            <div class="muted">${l.unit}</div>
+            ${!done && !locked ? `<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:5px">
+              ${['easy','medium','hard','extraHard','rapidFire'].map(d => {
+                const lbl = d === 'extraHard' ? 'EX' : d === 'rapidFire' ? '⚡' : d.slice(0,1).toUpperCase();
+                const p = passed(l.id, d);
+                return `<span class="dbadge ${p ? 'd-e' : 'd-x'}" style="font-size:9px;${p ? '' : 'opacity:.3'}">${p ? '✓' : ''} ${lbl}</span>`;
+              }).join('')}
+            </div>` : ''}
+          </div>
+          <span class="tag tag-${l.level}">${l.level === 'foundation' ? 'Found.' : l.level === 'phrases' ? 'Phrases' : l.level === 'exam' ? 'Exam' : l.level.toUpperCase()}</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+    document.getElementById('next-card')?.addEventListener('click', () => openLesson(nextLesson));
+    document.querySelectorAll('[data-lid]').forEach(el => {
+      const idRaw = el.dataset.lid;
+      const id = isNaN(idRaw) ? idRaw : parseInt(idRaw);
+      const l = CURRICULUM.find(x => x.id == id);
+      if (!l || isLocked(l) || topicDone(l.id)) return;
+      const debtBlock = isDebtBlocked(l);
+      if (debtBlock) {
+        el.addEventListener('click', () => {
+          alert(`Complete the Rapid Fire for "${CURRICULUM.find(x=>x.id==debtBlock.id)?.title}" first.`);
+        });
+        return;
+      }
+      el.addEventListener('click', () => openLesson(l));
+    });
+  }
+
+  // ── LESSON VIEW ─────────────────────────────────────────────────────────────
+  else if (view === 'lesson' && phase === 'lesson') {
+    const content = STATE.generatedLesson;
+    const isPrewritten = !!(lesson.sections || lesson.phrases);
+
+    app.innerHTML = `<div class="scroll fade">
+      <div class="hdr">
+        <button class="back" id="back">←</button>
+        <div style="flex:1">
+          <div class="t2">${lesson.title}</div>
+          <div class="muted">${lesson.unit}</div>
+        </div>
+        <span class="tag tag-${lesson.level}">${lesson.level === 'foundation' ? 'Found.' : lesson.isPhrases ? 'Phrases' : lesson.level.toUpperCase()}</span>
+      </div>
+      ${!content && !isPrewritten ? `
+        <div class="loader">
+          <div class="loader-icon">⚙️</div>
+          <div>Generating your lesson...</div>
+          <div class="muted" style="margin-top:6px;font-size:11px">Using ${lastProvider || 'AI'}</div>
+        </div>
+      ` : `
+        <div style="padding:0 16px">
+          ${parseLessonContent(content, lesson)}
+        </div>
+        ${lesson.isPhrases ? '' : `
+          <div style="padding:14px 16px 0">
+            <button class="btn" id="tts-btn" style="margin-bottom:8px">
+              ${STATE.speaking ? '🔊 Reading aloud...' : '🔊 Hear example sentences'}
+            </button>
+            <button class="btn btn-dark" id="start-gaps">
+              ${lesson.fillGaps?.length ? 'Fill in the Gaps ✏️' : 'Start Exercises →'}
+            </button>
+          </div>
+        `}
+        ${lesson.isPhrases ? `
+          <div style="padding:0 16px 14px">
+            <button class="btn btn-dark" id="start-gaps">
+              ${lesson.fillGaps?.length ? 'Practice Phrases ✏️' : 'Done — Mark Complete ✓'}
+            </button>
+          </div>
+        ` : ''}
+      `}
+    </div>`;
+
+    document.getElementById('back')?.addEventListener('click', () => { STATE.view = 'home'; render(); });
+    document.getElementById('tts-btn')?.addEventListener('click', () => {
+      const exs = lesson.examples?.map(e => e[0]).join('. ') || '';
+      speak(exs.slice(0, 500));
+    });
+    document.getElementById('start-gaps')?.addEventListener('click', () => {
+      if (lesson.isPhrases) {
+        // Phrases — show fillGaps if any, then mark complete
+        if (lesson.fillGaps?.length) {
+          startPhase('gap');
+        } else {
+          ['easy','medium','hard','extraHard','rapidFire'].forEach(d => setPass(lesson.id, d));
+          const done = STATE.prog.completed || [];
+          if (!done.includes(lesson.id)) done.push(lesson.id);
+          const today = new Date().toDateString();
+          const streak = (STATE.prog.streak || 0) + (STATE.prog.lastDay === today ? 0 : 1);
+          STATE.prog = {...STATE.prog, completed: done, streak, lastDay: today};
+          saveProg(STATE.prog);
+          STATE.view = 'complete'; render();
+        }
+      } else {
+        startPhase(lesson.fillGaps?.length ? 'gap' : 'easy');
+      }
+    });
+  }
+
+  // ── FILL IN THE GAPS ────────────────────────────────────────────────────────
+  else if (view === 'lesson' && phase === 'gap') {
+    const gaps = lesson.fillGaps || [];
+    const gap = gaps[STATE.gapIdx];
+    if (!gap) { startPhase('easy'); return; }
+
+    app.innerHTML = `<div class="scroll fade">
+      <div class="hdr">
+        <button class="back" id="back">←</button>
+        <div style="flex:1"><div class="t2">Fill in the Gaps ✏️</div><div class="muted">${lesson.title}</div></div>
+        <span style="font-size:12px;font-weight:700;color:var(--muted)">${STATE.gapIdx+1}/${gaps.length}</span>
+      </div>
+      <div class="card-info" style="margin:12px 16px 0"><b>Warm-up</b> — no grading, just practice typing German. Answers revealed immediately.</div>
+      <div style="padding:12px 16px">
+        <div class="gap-sentence">${gap.sentence}</div>
+        <div class="gap-hint muted">Hint: ${gap.hint}</div>
+        ${umlauts()}
+        ${STATE.gapRevealed ? `
+          <div class="gap-revealed">✓ Answer: ${gap.answer}</div>
+          ${STATE.gapAnswer.trim().toLowerCase() !== gap.answer.toLowerCase() ?
+            `<div class="gap-wrong-hint">You wrote: "${STATE.gapAnswer || '(empty)'}"</div>` : ''}
+          <button class="btn btn-dark" id="next-gap" style="margin-top:12px">
+            ${STATE.gapIdx+1 >= gaps.length ? (lesson.isPhrases ? 'Complete ✓' : 'Start Exercises →') : 'Next →'}
+          </button>
+        ` : `
+          <input id="gap-input" placeholder="Type your answer..." value="${STATE.gapAnswer}" autocomplete="off" autocorrect="off" autocapitalize="off">
+          <div class="row" style="margin-top:8px">
+            <button class="btn" id="reveal-btn">Reveal Answer</button>
+            <button class="btn btn-dark" id="check-gap" ${!STATE.gapAnswer.trim() ? 'disabled' : ''} style="flex:2">Check →</button>
+          </div>
+        `}
+      </div>
+    </div>`;
+
+    document.getElementById('back')?.addEventListener('click', () => { STATE.phase = 'lesson'; render(); });
+    const gi = document.getElementById('gap-input');
+    if (gi) {
+      STATE.lastInput = gi;
+      gi.addEventListener('input', e => STATE.gapAnswer = e.target.value);
+      gi.addEventListener('keydown', e => { if (e.key === 'Enter') checkGap(); });
+    }
+    document.getElementById('check-gap')?.addEventListener('click', checkGap);
+    document.getElementById('reveal-btn')?.addEventListener('click', () => { STATE.gapRevealed = true; render(); });
+    document.getElementById('next-gap')?.addEventListener('click', nextGap);
+  }
+
+  // ── EXERCISES ───────────────────────────────────────────────────────────────
+  else if (view === 'lesson' && ['easy','medium','hard','extraHard'].includes(phase)) {
+    const ex = STATE.exercises[STATE.exIdx];
+    const count = STATE.exercises.length || EXERCISE_COUNTS[phase];
+    const diffInfo = {
+      easy: {l:'Easy 🟢',cls:'d-e',desc:'Choose the correct option'},
+      medium: {l:'Medium 🟡',cls:'d-m',desc:'Translate with hints'},
+      hard: {l:'Hard 🔴',cls:'d-h',desc:'Free production — no hints'},
+      extraHard: {l:'Extra Hard ⚫',cls:'d-x',desc:'Complex sentences & error correction'},
+    }[phase];
+
+    const score = STATE.exScores.filter(Boolean).length;
+    const answered = STATE.exScores.length;
+
+    app.innerHTML = `<div class="scroll fade">
+      <div class="hdr">
+        <button class="back" id="back">←</button>
+        <div style="flex:1"><div class="t2">Exercises</div><div class="muted">${lesson.title}</div></div>
+        <span class="dbadge ${diffInfo.cls}">${diffInfo.l}</span>
+      </div>
+      <div class="ex-dots">
+        ${Array.from({length:count}).map((_,i) => {
+          const cls = i < STATE.exScores.length ? (STATE.exScores[i] ? 'done' : 'fail') : i === STATE.exIdx ? 'active' : 'todo';
+          return `<div class="ex-dot ${cls}"></div>`;
+        }).join('')}
+      </div>
+      <div class="card-info" style="margin:8px 16px 0;font-size:11px">${diffInfo.desc} · ${STATE.exIdx+1}/${count} · Score: ${score}/${answered}</div>
+      <div style="padding:8px 16px">
+        ${STATE.exLoading ? `<div class="loader"><div class="loader-icon">⚙️</div><div>Building exercises...</div></div>` : ex ? `
+          <div class="card" style="margin:0 0 10px">
+            <div style="font-size:18px;font-weight:700;line-height:1.45;margin-bottom:${ex.hint && !STATE.grade ? 8 : 0}px">${ex.question}</div>
+            ${ex.hint && !STATE.grade ? `<div class="muted" style="padding-top:8px;border-top:1px solid var(--border)">${ex.hint}</div>` : ''}
+          </div>
+          ${STATE.grade ? `
+            <div class="grade-box ${STATE.grade.grade==='correct'?'grade-ok':STATE.grade.grade==='almost'?'grade-cl':'grade-no'}">
+              <div class="grade-label">${STATE.grade.grade==='correct'?'✓ Richtig!':STATE.grade.grade==='almost'?'~ Fast! (Almost)':'✗ Nicht ganz (Not quite)'}</div>
+              <div>${STATE.grade.explanation}</div>
+              ${STATE.grade.correction && STATE.grade.grade !== 'correct' ? `<div class="grade-correction">✏️ ${STATE.grade.correction}</div>` : ''}
+            </div>
+            <button class="btn btn-dark" id="next-ex" style="margin-top:10px">
+              ${STATE.exIdx+1>=count ? `Finish ${diffInfo.l} →` : 'Next →'}
+            </button>
+          ` : phase === 'easy' && ex.options?.length ? `
+            <div>
+              ${ex.options.map((opt,i) => `<button class="mc-opt" data-i="${i}">${['A','B','C','D'][i]}. ${opt}</button>`).join('')}
+            </div>
+          ` : `
+            <textarea id="ans" placeholder="${phase === 'medium' ? 'Use the word bank above...' : 'Type in German...'}">${STATE.answer}</textarea>
+            ${umlauts()}
+            <div class="row" style="margin-top:6px">
+              ${STATE.voiceOk ? `<button class="mic-btn${STATE.listening?' on':''}" id="mic">${STATE.listening?'🎙️':'🎤'}</button>` : ''}
+              <button class="btn btn-dark${STATE.grading||!STATE.answer.trim()?' ':''}${STATE.grading||!STATE.answer.trim()?'" disabled':'"}' id="chk" style="flex:1;text-align:center">
+                ${STATE.grading ? 'Checking...' : 'Check →'}
+              </button>
+            </div>
+          `}
+        ` : ''}
+      </div>
+    </div>`;
+
+    const provEl = document.getElementById('provider-note');
+    if (lastProvider && provEl) provEl.textContent = `via ${lastProvider}`;
+
+    document.getElementById('back')?.addEventListener('click', () => { STATE.phase = 'lesson'; render(); });
+    document.getElementById('next-ex')?.addEventListener('click', nextExercise);
+    const ans = document.getElementById('ans');
+    if (ans) {
+      STATE.lastInput = ans;
+      ans.addEventListener('input', e => STATE.answer = e.target.value);
+      ans.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); checkAnswer(); } });
+    }
+    document.getElementById('mic')?.addEventListener('click', () => startListen(t => {
+      STATE.answer += t;
+      const a = document.getElementById('ans'); if (a) a.value = STATE.answer;
+    }));
+    document.getElementById('chk')?.addEventListener('click', checkAnswer);
+    document.querySelectorAll('.mc-opt').forEach(btn => btn.addEventListener('click', () => mcSelect(btn, parseInt(btn.dataset.i))));
+  }
+
+  // ── CONVERSATION ─────────────────────────────────────────────────────────────
+  else if (view === 'lesson' && phase === 'conv') {
+    app.innerHTML = `<div class="chat-wrap fade">
+      <div class="hdr">
+        <div style="width:30px;height:30px;border-radius:50%;background:var(--success-bg);display:flex;align-items:center;justify-content:center;font-size:14px">🤖</div>
+        <div style="flex:1"><div class="t3">Max — Conversation</div><div style="font-size:11px;color:var(--success)">● ${lesson.title}</div></div>
+        <button class="btn btn-sm btn-dark" id="conv-done">Done ✓</button>
+      </div>
+      <div id="chat" class="chat-msgs">
+        ${STATE.msgs.length === 0 && STATE.convLoading ? `<div class="loader"><div>Max is getting ready...</div></div>` : ''}
+        ${STATE.msgs.map(m => {
+          const isU = m.role === 'user';
+          const parts = m.content.split('📝 Correction:');
+          const main = parts[0].trim();
+          const corr = parts[1]?.trim();
+          return isU
+            ? `<div style="display:flex;justify-content:flex-end"><div class="bubble-user">${main}</div></div>`
+            : `<div>
+                <div class="bubble-ai">${main.replace(/\n/g,'<br>')}</div>
+                ${corr ? `<div class="corr">📝 ${corr}</div>` : ''}
+                <button class="tts-btn" data-sp="${main.slice(0,280).replace(/"/g,"'")}">🔈 hear it</button>
+              </div>`;
+        }).join('')}
+        ${STATE.convLoading && STATE.msgs.length > 0 ? `<div><div class="bubble-ai"><div class="typing"><div class="tydot" style="animation-delay:0s"></div><div class="tydot" style="animation-delay:.2s"></div><div class="tydot" style="animation-delay:.4s"></div></div></div></div>` : ''}
+        <div id="chat-end"></div>
+      </div>
+      <div class="chat-input-area">
+        ${STATE.voiceOk ? `<button class="mic-btn${STATE.listening?' on':''}" id="mic-conv">🎤</button>` : ''}
+        <input id="conv-in" placeholder="Antworten Sie auf Deutsch..." value="${STATE.convInput.replace(/"/g,'&quot;')}">
+        <button class="btn btn-dark btn-sm" id="send-conv" style="width:auto" ${!STATE.convInput.trim()||STATE.convLoading?'disabled':''}>→</button>
+      </div>
+    </div>`;
+
+    document.getElementById('conv-done')?.addEventListener('click', nextPhase);
+    document.querySelectorAll('[data-sp]').forEach(b => b.addEventListener('click', () => speak(b.dataset.sp)));
+    const ci = document.getElementById('conv-in');
+    if (ci) {
+      STATE.lastInput = ci;
+      ci.addEventListener('input', e => {
+        STATE.convInput = e.target.value;
+        document.getElementById('send-conv').disabled = !e.target.value.trim() || STATE.convLoading;
+      });
+      ci.addEventListener('keydown', e => { if (e.key === 'Enter') sendConv(); });
+    }
+    document.getElementById('send-conv')?.addEventListener('click', sendConv);
+    document.getElementById('mic-conv')?.addEventListener('click', () => startListen(t => {
+      const i = document.getElementById('conv-in'); if (i) { i.value = STATE.convInput + t; STATE.convInput = i.value; }
+    }));
+    document.getElementById('chat-end')?.scrollIntoView({behavior:'smooth'});
+  }
+
+  // ── RAPID FIRE ───────────────────────────────────────────────────────────────
+  else if (view === 'lesson' && phase === 'rapidFire') {
+    const q = STATE.rfQuestions[STATE.rfIdx];
+    const total = STATE.rfQuestions.length;
+    const m = Math.floor(STATE.rfTimeLeft / 60);
+    const s = STATE.rfTimeLeft % 60;
+    const timePct = (STATE.rfTimeLeft / RAPID_FIRE_TIME) * 100;
+
+    app.innerHTML = `<div class="scroll fade">
+      <div class="hdr">
+        <button class="back" id="back">←</button>
+        <div style="flex:1"><div class="t2">⚡ Rapid Fire</div><div class="muted">${lesson.title}</div></div>
+        <span class="t2 rf-time">${m}:${s.toString().padStart(2,'0')}</span>
+      </div>
+      <div class="rf-timer"><div class="rf-fill${timePct < 20?' urgent':''}" style="width:${timePct}%"></div></div>
+      <div class="ex-dots">
+        ${Array.from({length:total}).map((_,i) => {
+          const cls = i < STATE.rfAnswers.length ? (STATE.rfAnswers[i].correct ? 'done' : 'fail') : i === STATE.rfIdx ? 'active' : 'todo';
+          return `<div class="ex-dot ${cls}"></div>`;
+        }).join('')}
+      </div>
+      <div style="padding:8px 16px">
+        ${STATE.rfLoading ? `<div class="loader"><div class="loader-icon">⚙️</div><div>Preparing rapid fire...</div></div>` : q ? `
+          <div class="card" style="margin:0 0 10px">
+            <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Q${STATE.rfIdx+1} of ${total}</div>
+            <div style="font-size:17px;font-weight:700;line-height:1.4">${q.question}</div>
+          </div>
+          ${q.options?.length ? `
+            <div>
+              ${q.options.map((opt,i) => `<button class="mc-opt rf-mc" data-i="${i}">${['A','B','C','D'][i]}. ${opt}</button>`).join('')}
+            </div>
+          ` : `
+            <input id="rf-ans" placeholder="Answer in German..." value="${STATE.rfAnswer}" autocomplete="off" autocorrect="off" autocapitalize="off">
+            ${umlauts()}
+            <div class="row" style="margin-top:6px">
+              ${STATE.voiceOk ? `<button class="mic-btn${STATE.listening?' on':''}" id="rf-mic">🎤</button>` : ''}
+              <button class="btn btn-dark" id="rf-submit" ${!STATE.rfAnswer.trim()?'disabled':''} style="flex:1;text-align:center">Submit →</button>
+            </div>
+          `}
+        ` : ''}
+      </div>
+    </div>`;
+
+    document.getElementById('back')?.addEventListener('click', () => {
+      if (confirm('Leave Rapid Fire? Your progress will be lost.')) {
+        clearInterval(STATE.rfTimer); STATE.phase = 'conv'; render();
+      }
+    });
+
+    const rfAns = document.getElementById('rf-ans');
+    if (rfAns) {
+      STATE.lastInput = rfAns;
+      rfAns.addEventListener('input', e => STATE.rfAnswer = e.target.value);
+      rfAns.addEventListener('keydown', e => { if (e.key === 'Enter') submitRF(); });
+    }
+    document.getElementById('rf-submit')?.addEventListener('click', submitRF);
+    document.getElementById('rf-mic')?.addEventListener('click', () => startListen(t => {
+      STATE.rfAnswer += t;
+      const a = document.getElementById('rf-ans'); if (a) a.value = STATE.rfAnswer;
+    }));
+    document.querySelectorAll('.rf-mc').forEach(btn => btn.addEventListener('click', () => {
+      const q = STATE.rfQuestions[STATE.rfIdx];
+      const letter = ['A','B','C','D'][parseInt(btn.dataset.i)];
+      const correct = letter === q.answer;
+      rfSubmitAnswer(correct);
+    }));
+  }
+
+  // ── RAPID FIRE RESULT ──────────────────────────────────────────────────────
+  else if (view === 'lesson' && phase === 'rfResult') {
+    const { correct, total, passed: rfPassed, timeUp } = STATE.rfResult || {};
+    const pct = Math.round((correct/total)*100);
+
+    app.innerHTML = `<div class="rf-result fade">
+      <div class="big-emoji">${rfPassed ? '⚡' : '😤'}</div>
+      <div class="t1" style="margin:8px 0">${rfPassed ? 'Rapid Fire Cleared!' : 'Rapid Fire Failed'}</div>
+      ${timeUp ? '<div class="muted">Time ran out</div>' : ''}
+      <div class="rf-score" style="margin:12px 0;color:${rfPassed?'var(--success)':'var(--danger)'}">${correct}/${total} <span style="font-size:14px">(${pct}%)</span></div>
+      ${rfPassed ? `
+        <div class="card-success" style="margin:0 0 16px">✓ Lesson complete! No debt recorded.</div>
+      ` : `
+        <div class="card-danger" style="margin:0 0 16px">
+          ⚡ Rapid Fire debt recorded. You can proceed to the next lesson, but will be blocked 2 lessons ahead until you clear this.
+        </div>
+      `}
+      <button class="btn btn-dark" id="rf-home">Back to Home</button>
+      ${!rfPassed ? `<button class="btn" id="rf-retry" style="margin-top:8px">Retry Rapid Fire</button>` : ''}
+    </div>`;
+
+    document.getElementById('rf-home')?.addEventListener('click', finishSession);
+    document.getElementById('rf-retry')?.addEventListener('click', () => startPhase('rapidFire'));
+  }
+
+  // ── COMPLETE ─────────────────────────────────────────────────────────────────
+  else if (view === 'complete') {
+    const done = STATE.prog.completed || [];
+    const total = CURRICULUM.filter(l => !l.isPhrases && !l.isExam).length;
+    app.innerHTML = `<div class="complete-screen">
+      <div class="big-emoji">🎉</div>
+      <div class="t1">Ausgezeichnet!</div>
+      <div class="muted">"${lesson?.title || ''}" — session complete</div>
+      <div class="stat-row">
+        <div class="stat"><div class="stat-n" style="color:#d97706">${STATE.prog.streak||0}</div><div class="stat-l">streak 🔥</div></div>
+        <div class="stat"><div class="stat-n">${done.length}</div><div class="stat-l">done</div></div>
+        <div class="stat"><div class="stat-n">${Math.round((done.length/total)*100)}%</div><div class="stat-l">to A2</div></div>
+      </div>
+      <button class="btn btn-dark" id="home-btn" style="max-width:240px">Back to Home →</button>
+    </div>`;
+
+    document.getElementById('home-btn')?.addEventListener('click', () => { STATE.view = 'home'; STATE.lesson = null; render(); });
+  }
+}
+
+// ─── RF SUBMIT ────────────────────────────────────────────────────────────────
+function rfSubmitAnswer(correct) {
+  STATE.rfAnswers.push({ correct });
+  if (STATE.rfIdx + 1 >= STATE.rfQuestions.length) {
+    finishRapidFire();
+  } else {
+    STATE.rfIdx++; STATE.rfAnswer = ''; render();
+  }
+}
+
+async function submitRF() {
+  if (!STATE.rfAnswer.trim()) return;
+  const q = STATE.rfQuestions[STATE.rfIdx];
+  // Quick grade — don't use API for RF (too slow) — just fuzzy string match
+  const given = STATE.rfAnswer.trim().toLowerCase();
+  const expected = q.answer.toLowerCase();
+  const correct = given === expected ||
+    given.includes(expected.slice(0, Math.max(3, expected.length - 2))) ||
+    expected.includes(given.slice(0, Math.max(3, given.length - 2)));
+  rfSubmitAnswer(correct);
+}
+
+// ─── OPEN LESSON ──────────────────────────────────────────────────────────────
+async function openLesson(lesson) {
+  STATE.view = 'lesson';
+  STATE.lesson = lesson;
+  STATE.phase = 'lesson';
+  STATE.generatedLesson = null;
+  render();
+
+  // If lesson needs AI generation
+  if (lesson.aiOutline && !lesson.sections && !lesson.isPhrases) {
+    const cached = STATE.lessonCache[lesson.id];
+    if (cached) {
+      STATE.generatedLesson = cached;
+    } else {
+      STATE.generatedLesson = null; // show loading
+      render();
+      STATE.generatedLesson = await generateLesson(lesson);
+    }
+    render();
+  }
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+window.insertUmlaut = insertUmlaut;
+
+async function init() {
+  initVoice();
+  // curriculum-data.js loaded via script tag before this module —
+  // CURRICULUM is already set. Just render.
+  if (!CURRICULUM.length) {
+    console.error('Curriculum empty — check curriculum-data.js script tag');
+  }
+  render();
+}
+
+init();
+</script>
+</body>
+</html>
