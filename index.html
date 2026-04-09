@@ -699,6 +699,7 @@ function parseLessonContent(text, lesson) {
   }
 
   // ── sections[] format (all modern lessons) ────────────────────────────────
+  if (lesson.sections) {
     let html = '';
     html += `<p class="body" style="color:var(--muted);margin-bottom:14px">${lesson.intro}</p>`;
     if (lesson.cognates?.length) {
@@ -1048,7 +1049,7 @@ function render() {
             ${umlauts()}
             <div class="row" style="margin-top:6px">
               ${STATE.voiceOk ? `<button class="mic-btn${STATE.listening?' on':''}" id="mic">${STATE.listening?'🎙️':'🎤'}</button>` : ''}
-              <button class="btn btn-dark${STATE.grading||!STATE.answer.trim()?' ':''}${STATE.grading||!STATE.answer.trim()?'" disabled':'"}' id="chk" style="flex:1;text-align:center">
+              <button class="btn btn-dark" id="chk" style="flex:1;text-align:center" ${STATE.grading||!STATE.answer.trim() ? 'disabled' : ''})>
                 ${STATE.grading ? 'Checking...' : 'Check →'}
               </button>
             </div>
