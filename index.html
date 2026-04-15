@@ -57,6 +57,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .btn-dark{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .btn-dark:hover{background:#333;border-color:#333}
 .btn-success{background:var(--success-bg);color:var(--success);border-color:var(--success-border)}
+.btn-correct{background:var(--success-bg);color:var(--success);border-color:var(--success-border);opacity:1 !important}
+.btn-wrong{background:#ffe5e5;color:#b91c1c;border-color:#fca5a5;opacity:1 !important}
 .btn-warn{background:var(--warn-bg);color:var(--warn);border-color:var(--warn-border)}
 .btn-sm{padding:8px 13px;font-size:12px;width:auto;display:inline-block}
 .btn-icon{background:none;border:none;cursor:pointer;font-size:16px;padding:4px;color:var(--muted)}
@@ -236,13 +238,72 @@ function loadLessonCache() {
 }
 function saveLessonCache(cache) { localStorage.setItem(LESSON_CACHE_KEY, JSON.stringify(cache)); }
 
+// ─── LEARNED VOCAB STORAGE ───────────────────────────────────────────────────
+const VOCAB_KEY = 'dt-vocab-v1';
+function loadLearnedVocab() {
+  try { return JSON.parse(localStorage.getItem(VOCAB_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveLearnedVocab(v) { localStorage.setItem(VOCAB_KEY, JSON.stringify(v)); }
+
+function addLessonVocab(lesson) {
+  if (!lesson?.vocab?.length) return 0;
+  const v = STATE.learnedVocab || {};
+  let added = 0;
+  lesson.vocab.forEach(entry => {
+    const [de, en] = Array.isArray(entry) ? entry : [entry, ''];
+    if (!de || !en) return;
+    if (!v[de]) {
+      v[de] = {
+        en, lessonId: lesson.id, lessonTitle: lesson.title, seenAt: Date.now(),
+        // SRS fields (SM-2 lite)
+        ease: 2.5,       // ease factor — grows with good recall
+        interval: 0,     // days until next review (0 = new, due immediately)
+        due: Date.now(), // timestamp — when this word next needs review
+        reviews: 0,      // total times reviewed
+        lapses: 0,       // times forgotten
+        mnemonic: null,  // cached AI-generated mnemonic
+      };
+      added++;
+    }
+  });
+  STATE.learnedVocab = v;
+  saveLearnedVocab(v);
+  return added;
+}
+
+// ─── MISTAKE JOURNAL STORAGE (logger lives further down) ─────────────────────
+const MISTAKES_KEY = 'dt-mistakes-v1';
+const MAX_MISTAKES = 200; // cap so localStorage doesn't bloat forever
+function loadMistakes() {
+  try { return JSON.parse(localStorage.getItem(MISTAKES_KEY) || '[]'); }
+  catch { return []; }
+}
+function saveMistakes(arr) { localStorage.setItem(MISTAKES_KEY, JSON.stringify(arr.slice(-MAX_MISTAKES))); }
+
+// Ensure an existing vault entry has SRS fields (lazy migration for pre-SRS data)
+function ensureSrs(word) {
+  if (word.ease === undefined) word.ease = 2.5;
+  if (word.interval === undefined) word.interval = 0;
+  if (word.due === undefined) word.due = Date.now();
+  if (word.reviews === undefined) word.reviews = 0;
+  if (word.lapses === undefined) word.lapses = 0;
+  if (word.mnemonic === undefined) word.mnemonic = null;
+  return word;
+}
+
 let STATE = {
-  view: 'home',
+  view: 'home', // home | lesson | complete | vocab
   lesson: null,
   phase: 'lesson', // lesson | gap | easy | medium | hard | extraHard | conv | rapidFire | complete | rfResult
   prog: loadProg(),
   lessonCache: loadLessonCache(),
+  learnedVocab: loadLearnedVocab(),
+  mistakes: loadMistakes(),
   generatedLesson: null,
+
+  // Vocab practice state
+  practice: { questions: [], idx: 0, picked: null, rated: false, score: 0, results: [], done: false, source: 'vault' },
 
   // Exercise state
   exercises: [], exIdx: 0, answer: '', grade: null, grading: false, exLoading: false,
@@ -399,28 +460,55 @@ async function generateLesson(lesson) {
 }
 
 // ─── EXERCISE GENERATION ─────────────────────────────────────────────────────
+const LEVEL_GUIDE = {
+  foundation: `ABSOLUTE BEGINNER (pre-A1). The student has never studied German formally. STRICT RULES: Focus on recognition only — cognates, alphabet, pronunciation, and the 4 big German-vs-English differences (gender, cases, V2 rule, noun capitalisation). NO verb conjugation exercises. NO case exercises. NO sentence construction from scratch. Questions can be in English asking about German concepts. When using German, stick to the cognates and example sentences from the lesson verbatim. Max 5 German words per sentence.`,
+  a11: `A1.1 LEVEL — early beginner. STRICT RULES: Present tense only. Simple Subject-Verb-Object sentences. Max 6 words per German sentence. Only use pronouns ich/du/er/sie/es/wir/ihr/sie, the verbs sein/haben and any verbs taught in this or earlier lessons, and the vocabulary list provided. NO Perfekt, NO Präteritum (except war/hatte if already taught), NO subordinate clauses, NO modal verbs unless explicitly in the lesson.`,
+  a12: `A1.2 LEVEL — late beginner. STRICT RULES: Present tense + Perfekt for common verbs. Nominative and Accusative cases. Modal verbs (können, wollen, müssen, möchten). Max 8 words per German sentence. NO Dative unless the lesson teaches it. NO subordinate clauses unless taught. Use only vocabulary from this lesson plus basic A1.1 words.`,
+  a2: `A2 LEVEL. Present, Perfekt, and Präteritum for common verbs (war, hatte, ging, kam, sagte). All four cases allowed but keep Genitive rare. Simple subordinate clauses with weil/dass/wenn allowed. Max 12 words per sentence. Stay within A2 — no Konjunktiv II, no Passiv unless the lesson teaches it.`,
+  phrases: `PHRASE MEMORISATION. Focus on matching, recognising and producing set phrases exactly as taught. Do NOT ask for grammatical analysis or conjugation.`,
+  exam: `A2 EXAM REVIEW. Mixed A1-A2 content. Keep within A2 ceiling.`
+};
+
 async function generateExercises(lesson, diff, count) {
+  const levelKey = lesson.level || 'a11';
+  const levelGuide = LEVEL_GUIDE[levelKey] || LEVEL_GUIDE.a11;
+
   const diffDesc = {
-    easy: `${count} multiple-choice questions. 4 options (A/B/C/D). answer field = correct letter. options = array of 4 strings. Test recognition and comprehension.`,
-    medium: `${count} guided production exercises. Translation or fill-in-blank WITH a word bank hint (include answer in hint). hint = "Word bank: x, y, z". options = [].`,
-    hard: `${count} free production exercises. Translation English→German with NO hints. hint = "". options = []. Vary types: translate, conjugate, build sentences, fix errors.`,
-    extraHard: `${count} challenging exercises mixing grammar concepts. More complex sentences, tricky cases, combinations of rules covered in this lesson. NO hints. Include some error-correction questions where student must identify and fix a mistake.`,
-    rapidFire: `${count} rapid-fire mixed questions covering ALL aspects of this lesson. Mix of: multiple-choice (answer=letter, options=[4 items]), translation, fill-blank, error-correction. Vary difficulty within the set. Keep questions short and punchy for timed conditions.`
+    easy: `${count} multiple-choice questions testing recognition. 4 options (A/B/C/D). answer = correct letter. options = array of 4 strings. Questions should be EASY at this level — matching words to meanings, choosing the correct article, picking the right cognate. The wrong options should be plausible but clearly wrong once the student thinks.`,
+    medium: `${count} guided production exercises with HEAVY support. Fill-in-the-blank or short translation WITH a word bank hint that contains the correct answer plus 1-2 distractors. hint = "Word bank: x, y, z". options = []. Keep sentences as short as the level allows.`,
+    hard: `${count} free production exercises. Simple translations English→German, at the level ceiling NOT above it. hint = "". options = []. Stay SHORT — do not write sentences longer than the level allows. Test vocab and core grammar taught in THIS lesson.`,
+    extraHard: `${count} stretch exercises combining concepts from THIS lesson only. Sentences can be slightly longer but must not exceed the level ceiling. Include 1-2 error-correction questions where the student fixes a mistake. Do NOT introduce grammar or vocabulary beyond the level.`,
+    rapidFire: `${count} short mixed questions covering this lesson. Mix recognition and production. Keep each question answerable in under 15 seconds. Stay within the level.`
   };
 
   const lessonContent = STATE.generatedLesson || lesson.intro;
-  const vocabPreview = lesson.vocab?.slice(0, 10).map(v => Array.isArray(v) ? v[0] : v).join(', ') || '';
+  const allVocab = (lesson.vocab || []).map(v => Array.isArray(v) ? `${v[0]} = ${v[1]}` : v).join('\n');
+  const examples = (lesson.examples || []).map(e => Array.isArray(e) ? `${e[0]} — ${e[1]}` : e).join('\n');
 
   const raw = await callApi(
-    `You generate German language exercises. Return ONLY valid JSON array. No markdown. No text outside JSON.
+    `You generate German language exercises calibrated to a SPECIFIC CEFR level. Return ONLY a valid JSON array. No markdown. No prose outside JSON.
      Each object MUST have exactly: {question: string, answer: string, hint: string, options: array}
-     For multiple choice: answer is ONE letter A/B/C/D. options is array of exactly 4 strings.
-     For all other types: options is empty array []. hint is word bank or "".`,
-    `Generate ${count} ${diff} exercises for German lesson: "${lesson.title}"
-     Lesson content preview: ${lessonContent?.slice(0, 500) || lesson.intro}
-     Key vocabulary: ${vocabPreview}
-     Type specification: ${diffDesc[diff]}
-     Make exercises practical and directly test what was taught. Vary the question formats.`
+     Multiple choice: answer is ONE letter A/B/C/D. options is an array of exactly 4 strings.
+     Non-MC: options is []. hint is a word bank or "".
+     ABSOLUTE REQUIREMENT: Respect the CEFR level ceiling. Do not use vocabulary the student has not been taught. Do not use grammar beyond the level. Err on the side of being too easy rather than too hard.`,
+    `Generate ${count} ${diff} exercises for German lesson: "${lesson.title}" (${lesson.unit})
+
+LEVEL CEILING — obey strictly:
+${levelGuide}
+
+LESSON CONTENT (the ONLY topics you may test):
+${lessonContent?.slice(0, 1200) || lesson.intro}
+
+VOCABULARY ALLOWED (stick to this list + very basic words like ich/du/ist/und/der/die/das):
+${allVocab}
+
+EXAMPLE SENTENCES FROM THE LESSON (match this complexity — do NOT exceed it):
+${examples}
+
+EXERCISE TYPE SPECIFICATION:
+${diffDesc[diff]}
+
+Make exercises directly test what was taught in THIS lesson. Match the complexity of the example sentences above. When in doubt, make it simpler.`
   );
 
   try {
@@ -438,13 +526,31 @@ async function generateExercises(lesson, diff, count) {
 
 async function gradeAnswer(question, expected, given) {
   const raw = await callApi(
-    'Grade a German language exercise. Return ONLY valid JSON: {grade:"correct"|"almost"|"incorrect", explanation: string (1 encouraging sentence, max 15 words), correction: string}. Be lenient for minor spelling/capitalisation errors.',
-    `Question: "${question}". Expected: "${expected}". Student wrote: "${given}".`
+    `You are grading a German language exercise for a beginner. Return ONLY valid JSON — no markdown, no prose:
+{
+  "grade": "correct" | "almost" | "incorrect",
+  "explanation": "ONE encouraging sentence, max 15 words",
+  "correction": "the fully correct German answer",
+  "reason": "SHORT grammar reason WHY it was wrong or almost — e.g. 'Accusative needs den, not der', 'sein conjugates as ist for er/sie/es', 'noun must be capitalised'. If grade is 'correct', reason can be empty string."
+}
+Be lenient for minor spelling or capitalisation slips — mark those as 'almost' with a kind reason.
+When grade is 'incorrect' or 'almost', the 'reason' field is the most important — make it concrete and teach the rule in plain English.`,
+    `Question: "${question}"
+Expected answer: "${expected}"
+Student wrote: "${given}"
+
+Grade it now.`
   );
   try {
-    return JSON.parse(raw.replace(/```json|```/g, '').trim());
+    const parsed = JSON.parse(raw.replace(/```json|```/g, '').trim());
+    return {
+      grade: parsed.grade || 'incorrect',
+      explanation: parsed.explanation || '',
+      correction: parsed.correction || expected,
+      reason: parsed.reason || ''
+    };
   } catch {
-    return { grade: 'incorrect', explanation: 'Could not evaluate. Correct answer shown below.', correction: expected };
+    return { grade: 'incorrect', explanation: 'Could not evaluate. Correct answer shown below.', correction: expected, reason: '' };
   }
 }
 
@@ -535,6 +641,7 @@ function nextPhase() {
 
 function finishSession() {
   clearInterval(STATE.rfTimer);
+  addLessonVocab(STATE.lesson); // ensure vocab is saved even if user skipped through lesson page
   const done = STATE.prog.completed || [];
   if (topicDone(STATE.lesson.id) && !done.includes(STATE.lesson.id)) {
     done.push(STATE.lesson.id);
@@ -545,6 +652,176 @@ function finishSession() {
   saveProg(STATE.prog);
   STATE.view = 'complete';
   render();
+}
+
+// ─── MISTAKE JOURNAL (logger — storage constants are declared above STATE) ──
+// Call site: { type: 'vocab'|'exercise'|'rf', question, expected, given, reason?, lessonTitle?, lessonId? }
+function logMistake(entry) {
+  const arr = STATE.mistakes || [];
+  arr.push({ ...entry, when: Date.now() });
+  STATE.mistakes = arr;
+  saveMistakes(arr);
+}
+
+function resolveMistake(index) {
+  const arr = STATE.mistakes || [];
+  arr.splice(index, 1);
+  STATE.mistakes = arr;
+  saveMistakes(arr);
+}
+
+// ─── SPACED REPETITION (SM-2 LITE) ───────────────────────────────────────────
+// Quality: 0=forgot, 1=hard, 2=good, 3=easy
+function updateReviewSchedule(word, quality) {
+  ensureSrs(word);
+  word.reviews++;
+  const now = Date.now();
+  const DAY = 24 * 60 * 60 * 1000;
+
+  if (quality === 0) {
+    // Forgot — reset interval, lapse counter up
+    word.lapses++;
+    word.interval = 0;
+    word.ease = Math.max(1.3, word.ease - 0.2);
+    word.due = now + 10 * 60 * 1000; // 10 minutes — quick re-review
+  } else {
+    // Remembered (to some degree)
+    if (word.interval === 0) word.interval = quality === 1 ? 1 : quality === 2 ? 1 : 3;
+    else if (word.interval < 3) word.interval = quality === 1 ? word.interval : quality === 2 ? 3 : 6;
+    else word.interval = Math.round(word.interval * word.ease * (quality === 1 ? 0.6 : quality === 3 ? 1.3 : 1));
+
+    // Adjust ease
+    word.ease = Math.max(1.3, word.ease + (quality === 1 ? -0.15 : quality === 3 ? 0.15 : 0));
+    word.due = now + word.interval * DAY;
+  }
+  saveLearnedVocab(STATE.learnedVocab);
+}
+
+// Returns words due for review, sorted by urgency (most overdue first)
+function getDueWords(limit = 20) {
+  const now = Date.now();
+  const entries = Object.entries(STATE.learnedVocab || {});
+  const due = entries
+    .map(([de, meta]) => { ensureSrs(meta); return [de, meta]; })
+    .filter(([, meta]) => meta.due <= now)
+    .sort((a, b) => a[1].due - b[1].due);
+  return due.slice(0, limit);
+}
+
+function countDueWords() {
+  const now = Date.now();
+  return Object.values(STATE.learnedVocab || {}).filter(w => {
+    ensureSrs(w);
+    return w.due <= now;
+  }).length;
+}
+
+// ─── MNEMONIC GENERATOR (AI, cached per word) ───────────────────────────────
+async function generateMnemonicFor(de) {
+  const word = STATE.learnedVocab?.[de];
+  if (!word) return;
+  if (word.mnemonic) { render(); return; } // already cached
+  word.mnemonic = '⏳ Thinking...';
+  saveLearnedVocab(STATE.learnedVocab);
+  render();
+
+  try {
+    const raw = await callApi(
+      `You create vivid, silly, memorable mnemonics for German vocabulary — the "keyword method".
+Find a sound-alike English word or phrase inside the German word, then paint a bizarre mental image that links it to the meaning.
+Keep it under 25 words. Be concrete and visual. Reply with ONLY the mnemonic sentence — no preamble, no quotes.`,
+      `German word: "${de}"
+English meaning: "${word.en}"
+
+Create the mnemonic now.`
+    );
+    const text = raw?.trim().replace(/^["']|["']$/g, '').slice(0, 220);
+    word.mnemonic = text || `Think: ${de} = ${word.en}`;
+  } catch {
+    word.mnemonic = `Think: ${de} = ${word.en}`;
+  }
+  saveLearnedVocab(STATE.learnedVocab);
+  render();
+}
+
+// ─── VOCAB PRACTICE (LOCAL, NO AI) ───────────────────────────────────────────
+// Prioritises due words (SRS). Falls back to random selection if nothing is due.
+function buildVocabQuiz(count = 10) {
+  const entries = Object.entries(STATE.learnedVocab || {});
+  if (entries.length < 4) return [];
+
+  // Lazy-migrate every entry (ensures SRS fields exist) and split into due / not-due
+  entries.forEach(([, meta]) => ensureSrs(meta));
+  const now = Date.now();
+  const due = entries.filter(([, meta]) => meta.due <= now).sort((a,b) => a[1].due - b[1].due);
+  const notDue = entries.filter(([, meta]) => meta.due > now).sort(() => Math.random() - 0.5);
+
+  // Prefer due words; fill remainder with random not-due to get to `count`
+  const picks = [...due, ...notDue].slice(0, Math.min(count, entries.length));
+  const allEnglish = entries.map(([, meta]) => meta.en).filter(Boolean);
+
+  return picks.map(([de, meta]) => {
+    const distractors = [];
+    const pool = allEnglish.filter(en => en !== meta.en);
+    while (distractors.length < 3 && pool.length) {
+      const i = Math.floor(Math.random() * pool.length);
+      distractors.push(pool.splice(i, 1)[0]);
+    }
+    const options = [meta.en, ...distractors].sort(() => Math.random() - 0.5);
+    return { de, en: meta.en, options, lessonTitle: meta.lessonTitle, wasDue: meta.due <= now };
+  });
+}
+
+function pickVocabAnswer(choice) {
+  const q = STATE.practice.questions[STATE.practice.idx];
+  if (!q || STATE.practice.picked !== null) return;
+  STATE.practice.picked = choice;
+  render(); // Show correct/wrong highlighting — user rates next
+}
+
+// Called when user rates recall quality (0-3). Updates SRS schedule + logs result.
+function rateVocabRecall(quality) {
+  const p = STATE.practice;
+  const q = p.questions[p.idx];
+  if (!q || p.picked === null || p.rated) return;
+  const correct = p.picked === q.en;
+  p.results.push({ de: q.de, correct, chosen: p.picked, expected: q.en, quality });
+  if (correct) p.score++;
+  // Log mistake to journal (even if user self-rated "good" after getting it wrong)
+  if (!correct) logMistake({ type: 'vocab', question: q.de, expected: q.en, given: p.picked, lessonTitle: q.lessonTitle });
+  // Update SRS
+  const word = STATE.learnedVocab[q.de];
+  if (word) updateReviewSchedule(word, quality);
+  p.rated = true;
+  render();
+}
+
+function nextVocabQuestion() {
+  if (STATE.practice.idx + 1 >= STATE.practice.questions.length) {
+    STATE.practice.done = true;
+  } else {
+    STATE.practice.idx++;
+    STATE.practice.picked = null;
+    STATE.practice.rated = false;
+  }
+  render();
+}
+
+function startVocabQuiz(count = 10) {
+  const qs = buildVocabQuiz(count);
+  STATE.practice = { questions: qs, idx: 0, picked: null, rated: false, score: 0, results: [], done: false };
+  render();
+}
+
+// Marks a lesson fully complete (all diffs passed) — used for foundation & phrase lessons
+function markLessonComplete(lesson) {
+  ['easy','medium','hard','extraHard','rapidFire'].forEach(d => setPass(lesson.id, d));
+  const done = STATE.prog.completed || [];
+  if (!done.includes(lesson.id)) done.push(lesson.id);
+  const today = new Date().toDateString();
+  const streak = (STATE.prog.streak || 0) + (STATE.prog.lastDay === today ? 0 : 1);
+  STATE.prog = { ...STATE.prog, completed: done, streak, lastDay: today };
+  saveProg(STATE.prog);
 }
 
 function finishRapidFire(timeUp = false) {
@@ -576,6 +853,15 @@ async function checkAnswer() {
   STATE.grade = g;
   STATE.exScores.push(g.grade !== 'incorrect');
   if (g.grade !== 'incorrect') speak(ex.answer);
+  else logMistake({
+    type: 'exercise',
+    question: ex.question,
+    expected: ex.answer,
+    given: STATE.answer,
+    reason: g.reason || '',
+    lessonTitle: STATE.lesson?.title,
+    lessonId: STATE.lesson?.id,
+  });
   STATE.grading = false; render();
 }
 
@@ -583,13 +869,23 @@ function mcSelect(opt, idx) {
   const ex = STATE.exercises[STATE.exIdx];
   const letter = ['A','B','C','D'][idx];
   const correct = letter === ex.answer;
+  const correctText = ex.options[['A','B','C','D'].indexOf(ex.answer)];
   STATE.grade = {
     grade: correct ? 'correct' : 'incorrect',
     explanation: correct ? 'Richtig!' : 'Not quite — correct answer highlighted.',
-    correction: ex.answer
+    correction: ex.answer,
+    reason: ''
   };
   STATE.exScores.push(correct);
-  if (correct) speak(ex.options[['A','B','C','D'].indexOf(ex.answer)]);
+  if (correct) speak(correctText);
+  else logMistake({
+    type: 'exercise-mc',
+    question: ex.question,
+    expected: `${ex.answer}) ${correctText}`,
+    given: `${letter}) ${opt}`,
+    lessonTitle: STATE.lesson?.title,
+    lessonId: STATE.lesson?.id,
+  });
   render();
 }
 
@@ -834,6 +1130,23 @@ function render() {
         </div>
         <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
       </div>
+      ${(() => {
+        const due = countDueWords();
+        const mistakeCount = (STATE.mistakes || []).length;
+        if (due < 3 && mistakeCount < 3) return '';
+        return `<div id="drill-card" class="card" style="cursor:pointer;margin-top:4px;background:linear-gradient(135deg,#e0e7ff,#c7d2fe);border-color:#6366f1;border-width:2px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="font-size:32px">⏱️</div>
+            <div style="flex:1">
+              <div class="t3" style="margin-bottom:2px">Today's 3-Minute Drill</div>
+              <div class="muted" style="font-size:11px">
+                ${due > 0 ? `${due} word${due === 1 ? '' : 's'} due` : ''}${due > 0 && mistakeCount > 0 ? ' · ' : ''}${mistakeCount > 0 ? `${mistakeCount} mistake${mistakeCount === 1 ? '' : 's'} to review` : ''}
+              </div>
+            </div>
+            <div style="font-size:22px">→</div>
+          </div>
+        </div>`;
+      })()}
       <div id="next-card" class="card" style="cursor:pointer;border-style:dashed;border-width:2px;margin-top:4px">
         <div style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin-bottom:8px">Continue learning</div>
         <div class="t2" style="margin-bottom:3px">${nextLesson.title}</div>
@@ -846,6 +1159,35 @@ function render() {
           }).join('')}
         </div>
       </div>
+      ${(() => {
+        const vocabCount = Object.keys(STATE.learnedVocab || {}).length;
+        if (vocabCount < 4) return '';
+        const dueCount = countDueWords();
+        return `<div id="vocab-card" class="card" style="cursor:pointer;margin-top:4px;background:linear-gradient(135deg,#fef3c7,#fde68a);border-color:#f59e0b">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="font-size:28px">📚</div>
+            <div style="flex:1">
+              <div class="t3" style="margin-bottom:2px">Vocabulary Vault${dueCount > 0 ? ` · <span style="color:#b91c1c">${dueCount} due</span>` : ''}</div>
+              <div class="muted" style="font-size:11px">${vocabCount} words · ${dueCount > 0 ? 'tap to review now' : 'all caught up 🎉'}</div>
+            </div>
+            <div style="font-size:18px">→</div>
+          </div>
+        </div>`;
+      })()}
+      ${(() => {
+        const m = STATE.mistakes || [];
+        if (m.length === 0) return '';
+        return `<div id="mistakes-card" class="card" style="cursor:pointer;margin-top:4px;background:linear-gradient(135deg,#fce7f3,#fbcfe8);border-color:#ec4899">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="font-size:28px">📘</div>
+            <div style="flex:1">
+              <div class="t3" style="margin-bottom:2px">Mistake Journal</div>
+              <div class="muted" style="font-size:11px">${m.length} ${m.length === 1 ? 'entry' : 'entries'} · learn from your errors</div>
+            </div>
+            <div style="font-size:18px">→</div>
+          </div>
+        </div>`;
+      })()}
       <div class="section-title">All lessons</div>
       ${CURRICULUM.map((l, idx) => {
         const done = topicDone(l.id);
@@ -880,6 +1222,14 @@ function render() {
     </div>`;
 
     document.getElementById('next-card')?.addEventListener('click', () => openLesson(nextLesson));
+    document.getElementById('vocab-card')?.addEventListener('click', () => { STATE.view = 'vocab'; STATE.practice = { questions:[], idx:0, picked:null, rated:false, score:0, results:[], done:false, source:'vault' }; render(); });
+    document.getElementById('mistakes-card')?.addEventListener('click', () => { STATE.view = 'mistakes'; render(); });
+    document.getElementById('drill-card')?.addEventListener('click', () => {
+      // 3-minute drill: jump straight into a 10-word SRS session
+      STATE.view = 'vocab';
+      STATE.practice = { questions:[], idx:0, picked:null, rated:false, score:0, results:[], done:false, source:'drill' };
+      startVocabQuiz(10);
+    });
     document.querySelectorAll('[data-lid]').forEach(el => {
       const idRaw = el.dataset.lid;
       const id = isNaN(idRaw) ? idRaw : parseInt(idRaw);
@@ -894,6 +1244,221 @@ function render() {
       }
       el.addEventListener('click', () => openLesson(l));
     });
+  }
+
+  // ── MISTAKE JOURNAL ─────────────────────────────────────────────────────────
+  else if (view === 'mistakes') {
+    const list = [...(STATE.mistakes || [])].reverse(); // newest first
+    app.innerHTML = `<div class="scroll fade">
+      <div class="hdr">
+        <button class="back" id="back">←</button>
+        <div style="flex:1">
+          <div class="t2">📘 Mistake Journal</div>
+          <div class="muted">${list.length} entr${list.length === 1 ? 'y' : 'ies'} · learn from your errors</div>
+        </div>
+      </div>
+      <div style="padding:0 16px">
+        ${list.length === 0 ? `
+          <div class="card" style="text-align:center;padding:28px">
+            <div style="font-size:40px;margin-bottom:8px">✨</div>
+            <div class="t3">No mistakes yet!</div>
+            <div class="muted" style="margin-top:4px">Get something wrong during an exercise, and it'll show up here.</div>
+          </div>
+        ` : `
+          <div style="display:flex;gap:8px;margin-bottom:10px">
+            <button class="btn" id="clear-all" style="flex:1">Clear all</button>
+          </div>
+          ${list.map((m, idx) => {
+            const realIdx = (STATE.mistakes.length - 1) - idx;
+            const age = Math.max(1, Math.round((Date.now() - m.when) / 60000));
+            const ageText = age < 60 ? `${age}m ago` : age < 1440 ? `${Math.round(age/60)}h ago` : `${Math.round(age/1440)}d ago`;
+            const typeIcon = m.type === 'vocab' ? '📚' : m.type === 'rf' ? '⚡' : '✏️';
+            return `<div class="card" style="padding:12px">
+              <div style="display:flex;justify-content:space-between;align-items:start;gap:8px;margin-bottom:6px">
+                <div style="font-size:11px;color:var(--muted)">${typeIcon} ${m.lessonTitle || 'Exercise'} · ${ageText}</div>
+                <button class="btn" data-resolve="${realIdx}" style="padding:3px 8px;font-size:10px;width:auto">✓ Got it</button>
+              </div>
+              <div style="font-weight:600;margin-bottom:4px;font-size:13px">${m.question || ''}</div>
+              <div style="font-size:12px;color:#b91c1c">You wrote: <em>${m.given || ''}</em></div>
+              <div style="font-size:12px;color:var(--success);margin-top:2px">Correct: <strong>${m.expected || ''}</strong></div>
+              ${m.reason ? `<div style="margin-top:6px;padding-top:6px;border-top:1px dashed #ddd;font-size:12px;color:#6b21a8">📘 ${m.reason}</div>` : ''}
+            </div>`;
+          }).join('')}
+        `}
+      </div>
+    </div>`;
+
+    document.getElementById('back')?.addEventListener('click', () => { STATE.view = 'home'; render(); });
+    document.getElementById('clear-all')?.addEventListener('click', () => {
+      if (confirm(`Clear all ${STATE.mistakes.length} mistakes from the journal?`)) {
+        STATE.mistakes = []; saveMistakes([]); render();
+      }
+    });
+    document.querySelectorAll('[data-resolve]').forEach(btn => {
+      btn.addEventListener('click', () => { resolveMistake(parseInt(btn.dataset.resolve)); render(); });
+    });
+  }
+
+  // ── VOCAB VAULT / PRACTICE ──────────────────────────────────────────────────
+  else if (view === 'vocab') {
+    const vocab = STATE.learnedVocab || {};
+    const entries = Object.entries(vocab);
+    // Group by lesson
+    const byLesson = {};
+    entries.forEach(([de, meta]) => {
+      const key = meta.lessonTitle || `Lesson ${meta.lessonId}`;
+      if (!byLesson[key]) byLesson[key] = [];
+      byLesson[key].push({ de, en: meta.en });
+    });
+    const p = STATE.practice;
+    const q = p.questions[p.idx];
+
+    if (p.questions.length && !p.done && q) {
+      // In-quiz view
+      const answered = p.picked !== null;
+      const rated = p.rated;
+      const wasCorrect = p.picked === q.en;
+      const word = STATE.learnedVocab[q.de];
+      const dueBadge = q.wasDue ? `<span style="font-size:10px;background:#fef3c7;color:#92400e;padding:2px 7px;border-radius:10px;margin-left:6px">due</span>` : '';
+
+      app.innerHTML = `<div class="scroll fade">
+        <div class="hdr">
+          <button class="back" id="back">←</button>
+          <div style="flex:1">
+            <div class="t2">Vocabulary Practice ${dueBadge}</div>
+            <div class="muted">Q ${p.idx + 1}/${p.questions.length} · Score ${p.score}/${p.idx + (rated ? 1 : 0)}</div>
+          </div>
+        </div>
+        <div style="padding:0 16px">
+          <div class="card" style="text-align:center;padding:28px 16px">
+            <div class="muted" style="font-size:11px;margin-bottom:8px">What does this mean?</div>
+            <div style="font-size:26px;font-weight:700">${q.de}</div>
+            ${word?.mnemonic ? `<div style="margin-top:10px;font-size:12px;color:#7c3aed;font-style:italic">💡 ${word.mnemonic}</div>` : ''}
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+            ${q.options.map((opt, i) => {
+              let cls = 'btn';
+              if (answered) {
+                if (opt === q.en) cls = 'btn btn-correct';
+                else if (opt === p.picked) cls = 'btn btn-wrong';
+              }
+              return `<button class="${cls}" data-opt="${i}" ${answered ? 'disabled' : ''}>${opt}</button>`;
+            }).join('')}
+          </div>
+
+          ${answered && !rated ? `
+            <div class="card" style="margin-top:14px;padding:12px;background:#f8f7f4">
+              <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;margin-bottom:8px;text-align:center">
+                How well did you know this?
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px">
+                <button class="btn btn-wrong" data-q="0" style="font-size:12px;padding:10px">😵 Forgot</button>
+                <button class="btn" data-q="1" style="font-size:12px;padding:10px;background:#fef3c7;border-color:#f59e0b;color:#92400e">🤔 Hard</button>
+                <button class="btn" data-q="2" style="font-size:12px;padding:10px;background:#dbeafe;border-color:#60a5fa;color:#1e40af">👍 Good</button>
+                <button class="btn btn-correct" data-q="3" style="font-size:12px;padding:10px">⚡ Easy</button>
+              </div>
+              ${!wasCorrect && word?.mnemonic ? '' : !wasCorrect ? `
+                <button class="btn" id="gen-mnemonic" style="margin-top:8px;font-size:11px;padding:8px">💡 Generate a memory trick for this word</button>
+              ` : ''}
+            </div>
+          ` : ''}
+
+          ${rated ? `
+            <button class="btn btn-dark" id="next-q" style="margin-top:14px">
+              ${p.idx + 1 >= p.questions.length ? 'See results →' : 'Next →'}
+            </button>
+          ` : ''}
+        </div>
+      </div>`;
+
+      document.getElementById('back')?.addEventListener('click', () => { STATE.view = 'home'; render(); });
+      document.querySelectorAll('[data-opt]').forEach(btn => {
+        btn.addEventListener('click', () => pickVocabAnswer(q.options[parseInt(btn.dataset.opt)]));
+      });
+      document.querySelectorAll('[data-q]').forEach(btn => {
+        btn.addEventListener('click', () => rateVocabRecall(parseInt(btn.dataset.q)));
+      });
+      document.getElementById('gen-mnemonic')?.addEventListener('click', () => generateMnemonicFor(q.de));
+      document.getElementById('next-q')?.addEventListener('click', nextVocabQuestion);
+    } else if (p.done) {
+      // Results view
+      const pct = Math.round((p.score / p.questions.length) * 100);
+      app.innerHTML = `<div class="scroll fade">
+        <div class="hdr">
+          <button class="back" id="back">←</button>
+          <div style="flex:1">
+            <div class="t2">Practice Complete</div>
+          </div>
+        </div>
+        <div style="padding:0 16px">
+          <div class="card" style="text-align:center;padding:28px 16px">
+            <div style="font-size:44px;margin-bottom:6px">${pct >= 80 ? '🎉' : pct >= 60 ? '👍' : '📚'}</div>
+            <div class="t1" style="margin-bottom:4px">${p.score} / ${p.questions.length}</div>
+            <div class="muted">${pct}% correct</div>
+          </div>
+          <div class="section-title">Review</div>
+          ${p.results.map(r => `
+            <div class="card" style="padding:10px 12px;display:flex;align-items:center;gap:10px">
+              <div style="font-size:18px">${r.correct ? '✓' : '✗'}</div>
+              <div style="flex:1">
+                <div style="font-weight:600">${r.de}</div>
+                <div class="muted" style="font-size:11px">${r.correct ? r.expected : `You: ${r.chosen} · Correct: ${r.expected}`}</div>
+              </div>
+            </div>
+          `).join('')}
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button class="btn" id="retry-quiz" style="flex:1">Practice again</button>
+            <button class="btn btn-dark" id="home-back" style="flex:1">Home →</button>
+          </div>
+        </div>
+      </div>`;
+
+      document.getElementById('back')?.addEventListener('click', () => { STATE.view = 'home'; render(); });
+      document.getElementById('retry-quiz')?.addEventListener('click', startVocabQuiz);
+      document.getElementById('home-back')?.addEventListener('click', () => { STATE.view = 'home'; render(); });
+    } else {
+      // Vault overview — list words and "Start practice" button
+      app.innerHTML = `<div class="scroll fade">
+        <div class="hdr">
+          <button class="back" id="back">←</button>
+          <div style="flex:1">
+            <div class="t2">📚 Vocabulary Vault</div>
+            <div class="muted">${entries.length} words from ${Object.keys(byLesson).length} lesson${Object.keys(byLesson).length === 1 ? '' : 's'}</div>
+          </div>
+        </div>
+        <div style="padding:0 16px">
+          <button class="btn btn-dark" id="start-practice" ${entries.length < 4 ? 'disabled' : ''}>
+            ${entries.length < 4 ? `Need at least 4 words (${entries.length} saved)` : `Practice ${Math.min(10, entries.length)} random words →`}
+          </button>
+          ${Object.entries(byLesson).map(([title, words]) => `
+            <div class="section-title">${title} · ${words.length}</div>
+            ${words.map(w => {
+              const meta = STATE.learnedVocab[w.de] || {};
+              const hasMnem = meta.mnemonic && !meta.mnemonic.startsWith('⏳');
+              const loading = meta.mnemonic === '⏳ Thinking...';
+              return `
+                <div class="card" style="padding:10px 12px">
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+                    <div style="font-weight:600;flex:1;min-width:0">${w.de}</div>
+                    <div class="muted" style="font-size:12px;text-align:right">${w.en}</div>
+                    <button class="btn" data-mnem="${w.de.replace(/"/g,'&quot;')}" style="padding:5px 9px;font-size:11px;width:auto;flex-shrink:0" ${loading ? 'disabled' : ''}>
+                      ${loading ? '⏳' : hasMnem ? '💡' : '+ 💡'}
+                    </button>
+                  </div>
+                  ${hasMnem ? `<div style="margin-top:6px;font-size:12px;color:#7c3aed;font-style:italic">${meta.mnemonic}</div>` : ''}
+                </div>
+              `;
+            }).join('')}
+          `).join('')}
+        </div>
+      </div>`;
+
+      document.getElementById('back')?.addEventListener('click', () => { STATE.view = 'home'; render(); });
+      document.getElementById('start-practice')?.addEventListener('click', () => startVocabQuiz(10));
+      document.querySelectorAll('[data-mnem]').forEach(btn => {
+        btn.addEventListener('click', () => generateMnemonicFor(btn.dataset.mnem));
+      });
+    }
   }
 
   // ── LESSON VIEW ─────────────────────────────────────────────────────────────
@@ -926,7 +1491,7 @@ function render() {
               ${STATE.speaking ? '🔊 Reading aloud...' : '🔊 Hear example sentences'}
             </button>
             <button class="btn btn-dark" id="start-gaps">
-              ${lesson.fillGaps?.length ? 'Fill in the Gaps ✏️' : 'Start Exercises →'}
+              ${lesson.level === 'foundation' ? 'Mark as Read ✓' : lesson.fillGaps?.length ? 'Fill in the Gaps ✏️' : 'Start Exercises →'}
             </button>
           </div>
         `}
@@ -946,18 +1511,19 @@ function render() {
       speak(exs.slice(0, 500));
     });
     document.getElementById('start-gaps')?.addEventListener('click', () => {
-      if (lesson.isPhrases) {
+      // Save lesson's vocabulary to the learned-vocab vault (idempotent — only adds new words)
+      addLessonVocab(lesson);
+
+      if (lesson.level === 'foundation') {
+        // Foundation lessons are intro-only — no exercises, mark complete directly
+        markLessonComplete(lesson);
+        STATE.view = 'complete'; render();
+      } else if (lesson.isPhrases) {
         // Phrases — show fillGaps if any, then mark complete
         if (lesson.fillGaps?.length) {
           startPhase('gap');
         } else {
-          ['easy','medium','hard','extraHard','rapidFire'].forEach(d => setPass(lesson.id, d));
-          const done = STATE.prog.completed || [];
-          if (!done.includes(lesson.id)) done.push(lesson.id);
-          const today = new Date().toDateString();
-          const streak = (STATE.prog.streak || 0) + (STATE.prog.lastDay === today ? 0 : 1);
-          STATE.prog = {...STATE.prog, completed: done, streak, lastDay: today};
-          saveProg(STATE.prog);
+          markLessonComplete(lesson);
           STATE.view = 'complete'; render();
         }
       } else {
@@ -1050,6 +1616,7 @@ function render() {
               <div class="grade-label">${STATE.grade.grade==='correct'?'✓ Richtig!':STATE.grade.grade==='almost'?'~ Fast! (Almost)':'✗ Nicht ganz (Not quite)'}</div>
               <div>${STATE.grade.explanation}</div>
               ${STATE.grade.correction && STATE.grade.grade !== 'correct' ? `<div class="grade-correction">✏️ ${STATE.grade.correction}</div>` : ''}
+              ${STATE.grade.reason && STATE.grade.grade !== 'correct' ? `<div style="margin-top:8px;padding-top:8px;border-top:1px dashed currentColor;font-size:12px;opacity:.85">📘 <strong>Why:</strong> ${STATE.grade.reason}</div>` : ''}
             </div>
             <button class="btn btn-dark" id="next-ex" style="margin-top:10px">
               ${STATE.exIdx+1>=count ? `Finish ${diffInfo.l} →` : 'Next →'}
@@ -1302,6 +1869,22 @@ async function openLesson(lesson) {
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 window.insertUmlaut = insertUmlaut;
 
+// One-time backfill: populate vocab vault from lessons the user already completed
+// before the vault feature existed. Runs once per user (idempotent anyway, but we
+// skip after the first pass to keep init fast).
+function backfillVocabVault() {
+  const BACKFILL_KEY = 'dt-vocab-backfill-v1';
+  if (localStorage.getItem(BACKFILL_KEY)) return;
+  const completedIds = STATE.prog.completed || [];
+  let totalAdded = 0;
+  completedIds.forEach(id => {
+    const lesson = CURRICULUM.find(l => l.id == id); // loose == handles string/number ids
+    if (lesson) totalAdded += (addLessonVocab(lesson) || 0);
+  });
+  localStorage.setItem(BACKFILL_KEY, String(Date.now()));
+  if (totalAdded > 0) console.log(`Vocab vault backfilled with ${totalAdded} words from ${completedIds.length} completed lessons`);
+}
+
 async function init() {
   initVoice();
   // curriculum-data.js loaded via script tag before this module —
@@ -1309,6 +1892,7 @@ async function init() {
   if (!CURRICULUM.length) {
     console.error('Curriculum empty — check curriculum-data.js script tag');
   }
+  backfillVocabVault();
   render();
 }
 
