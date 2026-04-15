@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Deutsch Tutor A1→A2</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇩🇪</text></svg>">
+<link rel="manifest" href="/manifest.json">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -47,6 +48,39 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 .hdr{padding:13px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);background:var(--paper);position:sticky;top:0;z-index:20}
 .scroll{padding-bottom:80px}
 .section-title{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.9px;padding:10px 16px 5px}
+
+/* ─── GRAMMAR REFERENCE ─── */
+.grammar-table{width:100%;border-collapse:collapse;font-size:12px;margin:4px 0}
+.grammar-table th{background:var(--surface);padding:6px 8px;text-align:left;font-weight:700;border:1px solid var(--border);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.grammar-table td{padding:5px 8px;border:1px solid var(--border);vertical-align:top}
+.grammar-table td:first-child{font-weight:600;color:var(--muted);font-size:11px}
+.grammar-table code{background:var(--surface);padding:1px 4px;border-radius:3px;font-size:11px}
+.grammar-box{background:var(--surface);padding:9px 11px;border-radius:8px;margin:5px 0;font-size:12px;line-height:1.5;border-left:3px solid var(--border)}
+.grammar-box-a{border-left-color:#3b82f6}
+.grammar-box-d{border-left-color:#10b981}
+.grammar-box-w{border-left-color:#f59e0b}
+.grammar-box-g{border-left-color:#a855f7}
+.grammar-box code{background:var(--paper);padding:1px 5px;border-radius:3px;font-size:12px;font-weight:600}
+.grammar-item{cursor:pointer}
+.grammar-item-hdr{padding:12px;display:flex;justify-content:space-between;align-items:center;background:var(--paper);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:6px;transition:background .15s}
+.grammar-item-hdr:hover{background:var(--surface)}
+.grammar-item-body{padding:12px;background:var(--paper);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);margin-top:-7px;margin-bottom:6px}
+
+/* ─── ACTIVITY HEATMAP ─── */
+.heatmap{display:flex;gap:3px;padding:10px 0;overflow-x:auto}
+.heatmap-week{display:flex;flex-direction:column;gap:3px}
+.heatmap-cell{width:12px;height:12px;border-radius:2px;background:var(--border);transition:transform .1s}
+.heatmap-cell:hover{transform:scale(1.3)}
+.heatmap-cell.lvl1{background:#bbf7d0}
+.heatmap-cell.lvl2{background:#4ade80}
+.heatmap-cell.lvl3{background:#16a34a}
+.heatmap-cell.lvl4{background:#166534}
+.heatmap-cell.future{opacity:.25}
+[data-theme="dark"] .heatmap-cell{background:#22252b}
+[data-theme="dark"] .heatmap-cell.lvl1{background:#064e3b}
+[data-theme="dark"] .heatmap-cell.lvl2{background:#047857}
+[data-theme="dark"] .heatmap-cell.lvl3{background:#10b981}
+[data-theme="dark"] .heatmap-cell.lvl4{background:#6ee7b7}
 
 /* ─── EXAM TIMER ─── */
 .exam-timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:16px;padding:4px 10px;background:var(--surface);border-radius:8px;color:var(--ink);border:1px solid var(--border)}
@@ -320,6 +354,224 @@ function addLessonVocab(lesson) {
   STATE.learnedVocab = v;
   saveLearnedVocab(v);
   return added;
+}
+
+// ─── GRAMMAR REFERENCE (static data, no AI needed) ──────────────────────────
+const GRAMMAR_REF = [
+  {
+    id: 'articles',
+    title: '📘 Articles — der/die/das in all 4 cases',
+    level: 'A1',
+    body: `<table class="grammar-table">
+      <thead><tr><th>Case</th><th>Masculine</th><th>Feminine</th><th>Neuter</th><th>Plural</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Nominative</strong> (subject)</td><td>der</td><td>die</td><td>das</td><td>die</td></tr>
+        <tr><td><strong>Accusative</strong> (direct obj)</td><td><strong>den</strong></td><td>die</td><td>das</td><td>die</td></tr>
+        <tr><td><strong>Dative</strong> (indirect obj)</td><td><strong>dem</strong></td><td><strong>der</strong></td><td><strong>dem</strong></td><td><strong>den</strong> (+n)</td></tr>
+        <tr><td><strong>Genitive</strong> (possession)</td><td><strong>des</strong> (+s)</td><td>der</td><td><strong>des</strong> (+s)</td><td>der</td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="font-size:12px;margin-top:8px"><strong>Indefinite articles:</strong> ein (m) · eine (f) · ein (n) · — (plural has none). Follow the same pattern with endings: einen, einem, einer, eines.</p>`
+  },
+  {
+    id: 'pronouns',
+    title: '👥 Personal pronouns — all cases',
+    level: 'A1',
+    body: `<table class="grammar-table">
+      <thead><tr><th>Person</th><th>Nom.</th><th>Akk.</th><th>Dat.</th></tr></thead>
+      <tbody>
+        <tr><td>I</td><td>ich</td><td>mich</td><td>mir</td></tr>
+        <tr><td>you (informal)</td><td>du</td><td>dich</td><td>dir</td></tr>
+        <tr><td>he / it (m)</td><td>er</td><td>ihn</td><td>ihm</td></tr>
+        <tr><td>she / it (f)</td><td>sie</td><td>sie</td><td>ihr</td></tr>
+        <tr><td>it (n)</td><td>es</td><td>es</td><td>ihm</td></tr>
+        <tr><td>we</td><td>wir</td><td>uns</td><td>uns</td></tr>
+        <tr><td>you (plural)</td><td>ihr</td><td>euch</td><td>euch</td></tr>
+        <tr><td>they / you (formal)</td><td>sie / Sie</td><td>sie / Sie</td><td>ihnen / Ihnen</td></tr>
+      </tbody>
+    </table>`
+  },
+  {
+    id: 'sein-haben',
+    title: '⚡ sein & haben — present tense',
+    level: 'A1',
+    body: `<div style="display:flex;gap:10px;flex-wrap:wrap">
+      <table class="grammar-table" style="flex:1;min-width:160px">
+        <thead><tr><th colspan="2">sein (to be)</th></tr></thead>
+        <tbody>
+          <tr><td>ich</td><td>bin</td></tr>
+          <tr><td>du</td><td>bist</td></tr>
+          <tr><td>er/sie/es</td><td>ist</td></tr>
+          <tr><td>wir</td><td>sind</td></tr>
+          <tr><td>ihr</td><td>seid</td></tr>
+          <tr><td>sie/Sie</td><td>sind</td></tr>
+        </tbody>
+      </table>
+      <table class="grammar-table" style="flex:1;min-width:160px">
+        <thead><tr><th colspan="2">haben (to have)</th></tr></thead>
+        <tbody>
+          <tr><td>ich</td><td>habe</td></tr>
+          <tr><td>du</td><td>hast</td></tr>
+          <tr><td>er/sie/es</td><td>hat</td></tr>
+          <tr><td>wir</td><td>haben</td></tr>
+          <tr><td>ihr</td><td>habt</td></tr>
+          <tr><td>sie/Sie</td><td>haben</td></tr>
+        </tbody>
+      </table>
+    </div>`
+  },
+  {
+    id: 'regular-verbs',
+    title: '🔄 Regular verb endings — present tense',
+    level: 'A1',
+    body: `<p class="muted" style="font-size:12px;margin-bottom:8px">Example: <strong>wohnen</strong> (to live) — stem is <strong>wohn-</strong></p>
+    <table class="grammar-table">
+      <thead><tr><th>Person</th><th>Ending</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>ich</td><td>-e</td><td>wohne</td></tr>
+        <tr><td>du</td><td>-st</td><td>wohnst</td></tr>
+        <tr><td>er/sie/es</td><td>-t</td><td>wohnt</td></tr>
+        <tr><td>wir</td><td>-en</td><td>wohnen</td></tr>
+        <tr><td>ihr</td><td>-t</td><td>wohnt</td></tr>
+        <tr><td>sie/Sie</td><td>-en</td><td>wohnen</td></tr>
+      </tbody>
+    </table>`
+  },
+  {
+    id: 'modal-verbs',
+    title: '🎯 Modal verbs — können/müssen/wollen/dürfen/sollen/mögen',
+    level: 'A1',
+    body: `<p class="muted" style="font-size:12px;margin-bottom:8px">Modal + infinitive at end of clause. Example: <em>Ich <strong>kann</strong> Deutsch <strong>sprechen</strong>.</em></p>
+    <table class="grammar-table">
+      <thead><tr><th></th><th>können</th><th>müssen</th><th>wollen</th><th>dürfen</th><th>sollen</th><th>mögen</th></tr></thead>
+      <tbody>
+        <tr><td>ich</td><td>kann</td><td>muss</td><td>will</td><td>darf</td><td>soll</td><td>mag</td></tr>
+        <tr><td>du</td><td>kannst</td><td>musst</td><td>willst</td><td>darfst</td><td>sollst</td><td>magst</td></tr>
+        <tr><td>er/sie/es</td><td>kann</td><td>muss</td><td>will</td><td>darf</td><td>soll</td><td>mag</td></tr>
+        <tr><td>wir</td><td>können</td><td>müssen</td><td>wollen</td><td>dürfen</td><td>sollen</td><td>mögen</td></tr>
+        <tr><td>ihr</td><td>könnt</td><td>müsst</td><td>wollt</td><td>dürft</td><td>sollt</td><td>mögt</td></tr>
+        <tr><td>sie/Sie</td><td>können</td><td>müssen</td><td>wollen</td><td>dürfen</td><td>sollen</td><td>mögen</td></tr>
+      </tbody>
+    </table>
+    <p class="muted" style="font-size:12px;margin-top:8px"><strong>möchten</strong> (would like) is the polite form of <em>mögen</em>: ich möchte, du möchtest, er möchte, wir möchten, ihr möchtet, sie möchten.</p>`
+  },
+  {
+    id: 'prepositions',
+    title: '🧭 Prepositions by case',
+    level: 'A1-A2',
+    body: `<div class="grammar-box grammar-box-a"><strong>Always Accusative:</strong> <code>durch · für · gegen · ohne · um</code>
+      <p class="muted" style="font-size:11px;margin-top:2px">Mnemonic: <strong>DOGFU</strong></p></div>
+    <div class="grammar-box grammar-box-d"><strong>Always Dative:</strong> <code>aus · bei · mit · nach · seit · von · zu · gegenüber</code>
+      <p class="muted" style="font-size:11px;margin-top:2px">Mnemonic: <strong>ABMNSVZ</strong> ("aus bei mit nach seit von zu")</p></div>
+    <div class="grammar-box grammar-box-w"><strong>Wechselpräpositionen (Acc. or Dat.):</strong> <code>an · auf · hinter · in · neben · über · unter · vor · zwischen</code>
+      <p class="muted" style="font-size:11px;margin-top:2px">Accusative = motion toward (<em>Wohin?</em>) · Dative = location (<em>Wo?</em>)</p></div>
+    <div class="grammar-box grammar-box-g"><strong>Genitive:</strong> <code>wegen · während · trotz · statt · (an)statt</code></div>`
+  },
+  {
+    id: 'question-words',
+    title: '❓ Question words (W-Fragen)',
+    level: 'A1',
+    body: `<table class="grammar-table">
+      <tbody>
+        <tr><td><strong>wer?</strong></td><td>who?</td><td>Wer ist das?</td></tr>
+        <tr><td><strong>was?</strong></td><td>what?</td><td>Was machst du?</td></tr>
+        <tr><td><strong>wo?</strong></td><td>where?</td><td>Wo wohnst du?</td></tr>
+        <tr><td><strong>wohin?</strong></td><td>where (to)?</td><td>Wohin gehst du?</td></tr>
+        <tr><td><strong>woher?</strong></td><td>where from?</td><td>Woher kommst du?</td></tr>
+        <tr><td><strong>wann?</strong></td><td>when?</td><td>Wann beginnt es?</td></tr>
+        <tr><td><strong>warum?</strong></td><td>why?</td><td>Warum nicht?</td></tr>
+        <tr><td><strong>wie?</strong></td><td>how?</td><td>Wie geht's?</td></tr>
+        <tr><td><strong>wie viel / wie viele?</strong></td><td>how much/many?</td><td>Wie viele Kinder?</td></tr>
+        <tr><td><strong>welche/r/s?</strong></td><td>which?</td><td>Welches Buch?</td></tr>
+      </tbody>
+    </table>`
+  },
+  {
+    id: 'numbers',
+    title: '🔢 Numbers 0-100 · patterns',
+    level: 'A1',
+    body: `<div class="grammar-box"><strong>0-12 (memorise):</strong> null, eins, zwei, drei, vier, fünf, sechs, sieben, acht, neun, zehn, elf, zwölf</div>
+    <div class="grammar-box"><strong>13-19:</strong> add <code>-zehn</code> to base: dreizehn, vierzehn, fünfzehn, sechzehn, siebzehn, achtzehn, neunzehn</div>
+    <div class="grammar-box"><strong>20, 30, 40...:</strong> zwanzig, dreißig, vierzig, fünfzig, sechzig, siebzig, achtzig, neunzig, <strong>hundert</strong></div>
+    <div class="grammar-box"><strong>21-99 (units + "und" + tens):</strong> <em>einundzwanzig</em> = 21 (one-and-twenty) · <em>vierundsiebzig</em> = 74</div>
+    <p class="muted" style="font-size:11px;margin-top:8px"><strong>Important:</strong> 16 drops the s (sech<s>s</s>zehn → sechzehn), 17 drops the en (sieb<s>en</s>zehn → siebzehn). Same for 60 and 70.</p>`
+  },
+  {
+    id: 'perfekt',
+    title: '⏪ Perfekt — past tense with haben/sein',
+    level: 'A1-A2',
+    body: `<p class="muted" style="font-size:12px;margin-bottom:8px">Structure: <strong>haben/sein</strong> (conjugated, position 2) + <strong>Partizip II</strong> (at end)</p>
+    <div class="grammar-box"><strong>With <em>haben</em>:</strong> most verbs, especially transitive (take direct object)<br>
+    <em>Ich habe Deutsch gelernt.</em> (I learned German.)</div>
+    <div class="grammar-box"><strong>With <em>sein</em>:</strong> movement + change of state verbs<br>
+    <em>Ich bin nach Berlin gefahren.</em> (I travelled to Berlin.)<br>
+    Common: gehen (gegangen), kommen (gekommen), fahren (gefahren), laufen (gelaufen), fliegen (geflogen), bleiben (geblieben), werden (geworden), <strong>sein (gewesen)</strong>, sterben (gestorben)</div>
+    <div class="grammar-box"><strong>Partizip II formation:</strong><br>
+    Regular: <strong>ge-</strong>[stem]<strong>-t</strong> → lernen → gelernt<br>
+    Strong: <strong>ge-</strong>[modified stem]<strong>-en</strong> → gehen → gegangen<br>
+    No ge- for: verbs ending in <em>-ieren</em> (studieren → studiert), verbs with inseparable prefixes (be-, ent-, er-, ge-, ver-, zer-): besuchen → besucht</div>`
+  },
+  {
+    id: 'word-order',
+    title: '📐 Word order — V2, Satzklammer, questions',
+    level: 'A1',
+    body: `<div class="grammar-box"><strong>V2 Rule (statements):</strong> conjugated verb ALWAYS in position 2.<br>
+    <em>Ich wohne in Kiel.</em> / <em>In Kiel wohne ich.</em> / <em>Heute wohne ich in Kiel.</em></div>
+    <div class="grammar-box"><strong>Yes/No questions:</strong> verb first.<br>
+    <em>Wohnst du in Kiel?</em></div>
+    <div class="grammar-box"><strong>W-questions:</strong> question word, then verb.<br>
+    <em>Wo wohnst du?</em></div>
+    <div class="grammar-box"><strong>Satzklammer (sentence bracket):</strong> modal verbs + Perfekt push the second verb to the END.<br>
+    <em>Ich <strong>kann</strong> Deutsch <strong>sprechen</strong>.</em><br>
+    <em>Ich <strong>habe</strong> Deutsch <strong>gelernt</strong>.</em></div>`
+  },
+  {
+    id: 'negation',
+    title: '🚫 Negation — kein vs nicht',
+    level: 'A1',
+    body: `<div class="grammar-box"><strong>kein</strong> negates nouns with <em>ein</em> (or no article).<br>
+    Ich habe ein Auto. → Ich habe <strong>kein</strong> Auto.<br>
+    Declines like <em>ein</em>: kein, keine, keinen, keinem, etc.</div>
+    <div class="grammar-box"><strong>nicht</strong> negates verbs, adjectives, adverbs, or whole clauses.<br>
+    Ich komme. → Ich komme <strong>nicht</strong>.<br>
+    Das ist schön. → Das ist <strong>nicht</strong> schön.<br>
+    Usually at the end, but before what's being negated: <em>Ich fahre <strong>nicht</strong> mit dem Bus.</em></div>`
+  }
+];
+
+// ─── ACTIVITY TRACKING (for heatmap + streak) ────────────────────────────────
+function todayKey(d = new Date()) {
+  return d.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+function recordActivity() {
+  const days = STATE.prog.activeDays || {};
+  const key = todayKey();
+  days[key] = (days[key] || 0) + 1;
+  STATE.prog.activeDays = days;
+  saveProg(STATE.prog);
+}
+// Returns { counts: {YYYY-MM-DD: n}, weeks: [[day, day, ...], ...] } for the last N weeks
+function getActivityGrid(weeks = 12) {
+  const counts = STATE.prog.activeDays || {};
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  // Scroll back to the most recent Monday
+  const day = today.getDay(); // 0 = Sun
+  const mondayOffset = day === 0 ? 6 : day - 1;
+  const start = new Date(today);
+  start.setDate(today.getDate() - mondayOffset - (weeks - 1) * 7);
+  const grid = [];
+  for (let w = 0; w < weeks; w++) {
+    const week = [];
+    for (let d = 0; d < 7; d++) {
+      const date = new Date(start);
+      date.setDate(start.getDate() + w * 7 + d);
+      const key = todayKey(date);
+      week.push({ date: new Date(date), key, count: counts[key] || 0, isFuture: date > today });
+    }
+    grid.push(week);
+  }
+  return grid;
 }
 
 // ─── MOCK EXAMS (Goethe-format simulators) ───────────────────────────────────
@@ -642,6 +894,7 @@ function finishExam() {
   const exam = STATE.exam;
   if (!exam) return;
   clearInterval(exam.timer);
+  recordActivity();
   exam.phase = 'result';
   // Per-section scores
   const perSection = exam.template.sections.map(s => {
@@ -835,9 +1088,16 @@ function isLocked(lesson) {
 
 // ─── VOICE ────────────────────────────────────────────────────────────────────
 let gVoice = null;
+let gVoiceList = [];
 function initVoice() {
   if (window.SpeechRecognition || window.webkitSpeechRecognition) STATE.voiceOk = true;
-  const lv = () => { gVoice = window.speechSynthesis?.getVoices().find(v => v.lang.startsWith('de')) || null; };
+  const lv = () => {
+    const all = window.speechSynthesis?.getVoices() || [];
+    gVoiceList = all.filter(v => v.lang.startsWith('de'));
+    // Prefer user's saved voice, otherwise first German voice
+    const prefName = STATE.prefs?.voiceName;
+    gVoice = (prefName && gVoiceList.find(v => v.name === prefName)) || gVoiceList[0] || null;
+  };
   lv();
   window.speechSynthesis?.addEventListener('voiceschanged', lv);
 }
@@ -845,7 +1105,8 @@ function speak(txt) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(txt);
-  u.lang = 'de-DE'; u.rate = 0.85;
+  u.lang = 'de-DE';
+  u.rate = STATE.prefs?.ttsRate ? parseFloat(STATE.prefs.ttsRate) : 0.85;
   if (gVoice) u.voice = gVoice;
   u.onstart = () => { STATE.speaking = true; render(); };
   u.onend = () => { STATE.speaking = false; render(); };
@@ -1496,6 +1757,7 @@ function nextPhase() {
 
 function finishSession() {
   clearInterval(STATE.rfTimer);
+  recordActivity();
   addLessonVocab(STATE.lesson); // ensure vocab is saved even if user skipped through lesson page
   const done = STATE.prog.completed || [];
   if (topicDone(STATE.lesson.id) && !done.includes(STATE.lesson.id)) {
@@ -1639,6 +1901,7 @@ function rateVocabRecall(quality) {
   const p = STATE.practice;
   const q = p.questions[p.idx];
   if (!q || p.picked === null || p.rated) return;
+  recordActivity();
   const correct = p.picked === q.en;
   p.results.push({ de: q.de, correct, chosen: p.picked, expected: q.en, quality });
   if (correct) p.score++;
@@ -1670,6 +1933,7 @@ function startVocabQuiz(count = 10) {
 
 // Marks a lesson fully complete (all diffs passed) — used for foundation & phrase lessons
 function markLessonComplete(lesson) {
+  recordActivity();
   ['easy','medium','hard','extraHard','rapidFire'].forEach(d => setPass(lesson.id, d));
   const done = STATE.prog.completed || [];
   if (!done.includes(lesson.id)) done.push(lesson.id);
@@ -2110,6 +2374,17 @@ function render() {
     `;
 
     const practiceTabHtml = () => `
+      <div class="section-title">Reference</div>
+      <div id="grammar-card" class="card" style="cursor:pointer;background:linear-gradient(135deg,#dbeafe,#bfdbfe);border-color:#3b82f6">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="font-size:28px">📚</div>
+          <div style="flex:1">
+            <div class="t3" style="margin-bottom:2px">Grammar Reference</div>
+            <div class="muted" style="font-size:11px">Tables, rules, examples · always accessible</div>
+          </div>
+          <div style="font-size:18px">→</div>
+        </div>
+      </div>
       <div class="section-title">Review tools</div>
       ${vocabCount >= 4 ? `
         <div id="vocab-card" class="card" style="cursor:pointer;margin-top:4px;background:linear-gradient(135deg,#fef3c7,#fde68a);border-color:#f59e0b">
@@ -2209,6 +2484,29 @@ function render() {
             <div class="muted" style="font-size:10px">to A2</div>
           </div>
         </div>
+        <div class="section-title">Activity · last 12 weeks</div>
+        <div class="card" style="padding:10px 12px">
+          ${(() => {
+            const grid = getActivityGrid(12);
+            const total = Object.keys(STATE.prog.activeDays || {}).length;
+            const maxCount = Math.max(1, ...grid.flat().map(d => d.count));
+            return `<div class="heatmap">
+              ${grid.map(week => `<div class="heatmap-week">
+                ${week.map(cell => {
+                  if (cell.isFuture) return `<div class="heatmap-cell future" title="${cell.key}"></div>`;
+                  const lvl = cell.count === 0 ? 0 : cell.count >= Math.ceil(maxCount * 0.75) ? 4 : cell.count >= Math.ceil(maxCount * 0.5) ? 3 : cell.count >= Math.ceil(maxCount * 0.25) ? 2 : 1;
+                  return `<div class="heatmap-cell${lvl ? ' lvl' + lvl : ''}" title="${cell.key}: ${cell.count} ${cell.count === 1 ? 'session' : 'sessions'}"></div>`;
+                }).join('')}
+              </div>`).join('')}
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:11px;color:var(--muted)">
+              <span>${total} active day${total === 1 ? '' : 's'} total</span>
+              <span style="display:flex;align-items:center;gap:4px">
+                Less <span class="heatmap-cell"></span><span class="heatmap-cell lvl1"></span><span class="heatmap-cell lvl2"></span><span class="heatmap-cell lvl3"></span><span class="heatmap-cell lvl4"></span> More
+              </span>
+            </div>`;
+          })()}
+        </div>
         <div class="section-title">By level</div>
         ${byLevel.map(l => {
           const p = l.total > 0 ? Math.round((l.done / l.total) * 100) : 0;
@@ -2282,6 +2580,36 @@ function render() {
               <button data-s="1" class="${!prefs.scale || prefs.scale == 1 ? 'active' : ''}">M</button>
               <button data-s="1.1" class="${prefs.scale == 1.1 ? 'active' : ''}">L</button>
               <button data-s="1.2" class="${prefs.scale == 1.2 ? 'active' : ''}">XL</button>
+            </div>
+          </div>
+        </div>
+        <div class="section-title">Audio</div>
+        ${gVoiceList.length > 0 ? `
+          <div class="card" style="padding:12px">
+            <div style="margin-bottom:6px">
+              <div style="font-weight:600">German voice</div>
+              <div class="muted" style="font-size:11px">${gVoiceList.length} German voice${gVoiceList.length === 1 ? '' : 's'} available on this device</div>
+            </div>
+            <select id="pref-voice" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:13px">
+              ${gVoiceList.map(v => `<option value="${v.name}" ${prefs.voiceName === v.name ? 'selected' : ''}>${v.name} (${v.lang})</option>`).join('')}
+            </select>
+            <button class="btn" id="pref-test-voice" style="margin-top:8px;font-size:12px;padding:8px">🔊 Test voice — "Guten Tag!"</button>
+          </div>
+        ` : `
+          <div class="card" style="padding:12px">
+            <div class="muted" style="font-size:12px">No German TTS voices available on this device. The app will still try to speak using a fallback voice.</div>
+          </div>
+        `}
+        <div class="card" style="padding:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div>
+              <div style="font-weight:600">Speech speed</div>
+              <div class="muted" style="font-size:11px">${prefs.ttsRate || 0.85}×</div>
+            </div>
+            <div class="segmented" id="pref-rate">
+              <button data-r="0.7" class="${prefs.ttsRate == 0.7 ? 'active' : ''}">Slow</button>
+              <button data-r="0.85" class="${!prefs.ttsRate || prefs.ttsRate == 0.85 ? 'active' : ''}">Normal</button>
+              <button data-r="1" class="${prefs.ttsRate == 1 ? 'active' : ''}">Fast</button>
             </div>
           </div>
         </div>
@@ -2367,6 +2695,7 @@ function render() {
     document.querySelectorAll('[data-exam]').forEach(el => {
       el.addEventListener('click', () => startExam(el.dataset.exam));
     });
+    document.getElementById('grammar-card')?.addEventListener('click', () => { STATE.view = 'grammar'; STATE.grammarSearch = ''; STATE.grammarExpanded = {}; render(); });
 
     // Settings tab handlers
     document.getElementById('pref-dark')?.addEventListener('change', (e) => {
@@ -2377,6 +2706,18 @@ function render() {
       btn.addEventListener('click', () => {
         STATE.prefs = { ...STATE.prefs, scale: parseFloat(btn.dataset.s) };
         savePrefs(STATE.prefs); applyPrefs(STATE.prefs); render();
+      });
+    });
+    document.getElementById('pref-voice')?.addEventListener('change', (e) => {
+      STATE.prefs = { ...STATE.prefs, voiceName: e.target.value };
+      savePrefs(STATE.prefs);
+      gVoice = gVoiceList.find(v => v.name === e.target.value) || gVoice;
+    });
+    document.getElementById('pref-test-voice')?.addEventListener('click', () => speak('Guten Tag! Wie geht es dir heute?'));
+    document.querySelectorAll('#pref-rate button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        STATE.prefs = { ...STATE.prefs, ttsRate: parseFloat(btn.dataset.r) };
+        savePrefs(STATE.prefs); render();
       });
     });
     document.getElementById('pref-export-corpus')?.addEventListener('click', () => exportCorpusJson({ includeAll: false }));
@@ -2390,6 +2731,50 @@ function render() {
         }
       }
     });
+  }
+
+  // ── GRAMMAR REFERENCE ───────────────────────────────────────────────────────
+  else if (view === 'grammar') {
+    const expanded = STATE.grammarExpanded || {};
+    const q = (STATE.grammarSearch || '').toLowerCase().trim();
+    const items = GRAMMAR_REF.filter(g => !q || g.title.toLowerCase().includes(q) || g.body.toLowerCase().includes(q));
+
+    app.innerHTML = `<div class="scroll fade">
+      <div class="hdr">
+        <button class="back" id="back">←</button>
+        <div style="flex:1"><div class="t2">📚 Grammar Reference</div><div class="muted">Quick lookup · no AI needed</div></div>
+      </div>
+      <div style="padding:0 16px">
+        <input id="grammar-search" placeholder="Search topics (e.g. accusative, modal, preposition)..." value="${(STATE.grammarSearch || '').replace(/"/g,'&quot;')}" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--paper);color:var(--ink);font-family:inherit;font-size:13px;margin-bottom:12px">
+        ${items.length === 0 ? '<div class="card"><div class="muted" style="text-align:center">No matches.</div></div>' : items.map(g => {
+          const open = !!expanded[g.id] || !!q;
+          return `<div class="grammar-item">
+            <div class="grammar-item-hdr" data-toggle="${g.id}">
+              <div>
+                <div style="font-weight:600;font-size:13px">${g.title}</div>
+                <div class="muted" style="font-size:11px">Level ${g.level}</div>
+              </div>
+              <div style="font-size:14px">${open ? '▾' : '▸'}</div>
+            </div>
+            ${open ? `<div class="grammar-item-body">${g.body}</div>` : ''}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+
+    document.getElementById('back')?.addEventListener('click', () => { STATE.view = 'home'; render(); });
+    document.querySelectorAll('[data-toggle]').forEach(el => {
+      el.addEventListener('click', () => {
+        STATE.grammarExpanded = { ...(STATE.grammarExpanded || {}), [el.dataset.toggle]: !(STATE.grammarExpanded || {})[el.dataset.toggle] };
+        render();
+      });
+    });
+    const srch = document.getElementById('grammar-search');
+    if (srch) {
+      srch.addEventListener('input', e => { STATE.grammarSearch = e.target.value; render(); });
+      // keep focus after re-render
+      if (STATE.grammarSearch) { srch.focus(); srch.setSelectionRange(srch.value.length, srch.value.length); }
+    }
   }
 
   // ── EXAM ENGINE ─────────────────────────────────────────────────────────────
@@ -3508,8 +3893,9 @@ async function submitRF() {
 async function openLesson(lesson) {
   // Exam lessons redirect to the new exam engine
   if (lesson.isExam || lesson.level === 'exam') {
-    // Map to the matching template: A2 full exam by default
-    const key = lesson.id === 34 ? 'a2-full' : lesson.level === 'a11' ? 'a1-checkpoint' : lesson.level === 'a12' ? 'a1-full' : 'a2-full';
+    // Map lesson id → exam template
+    const idToKey = { 34: 'a2-full', 39: 'a1-checkpoint', 40: 'a1-full', 41: 'a2-checkpoint' };
+    const key = idToKey[lesson.id] || (lesson.level === 'a11' ? 'a1-checkpoint' : lesson.level === 'a12' ? 'a1-full' : 'a2-full');
     startExam(key);
     return;
   }
@@ -3555,6 +3941,13 @@ function backfillVocabVault() {
 async function init() {
   applyPrefs(STATE.prefs || {});
   initVoice();
+
+  // Register service worker (offline + installable PWA)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW registration failed:', err));
+    });
+  }
   // curriculum-data.js loaded via script tag before this module —
   // CURRICULUM is already set. Just render.
   if (!CURRICULUM.length) {

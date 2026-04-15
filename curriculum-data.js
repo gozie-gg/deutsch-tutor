@@ -2258,6 +2258,20 @@ Wir besuchen unsere Familie in Nigeria. — We're visiting our family in Nigeria
   aiOutline: null,
 },
 
+{
+  id: 39, unit: "A1.1 — Checkpoint", level: "a11",
+  title: "A1.1 Checkpoint Exam",
+  icon: "🎯",
+  isExam: true,
+  intro: "A mid-A1 checkpoint to test what you've learned so far: greetings, numbers, articles, sein/haben, professions, family, time, hobbies, and present tense. 15 mixed multiple-choice questions, 15 minutes. Pass: 70%. Not official — just a chance to see where you stand before starting A1.2.",
+  sections: [],
+  vocab: [],
+  examples: [],
+  summary: [],
+  mistakes: [],
+  tips: [],
+  aiOutline: null,
+},
 
 {
   id: 11, unit: "A1.2 — Lesson 1", level: "a12",
@@ -4628,6 +4642,419 @@ Ich schicke ihr ein Paket. — I'm sending her a package.`
 
 
 {
+  id: 35, unit: "A1.2 — Plural Patterns", level: "a12",
+  title: "Plural Nouns — Patterns & Rules",
+  icon: "📚",
+  intro: "German has five plural patterns. Unlike English (mostly just -s), German plurals shift endings AND sometimes umlaut the stem vowel. The good news: gender predicts the pattern ~75% of the time. Learn the rules and you'll guess correctly most of the time — and memorise the exceptions as you meet them.",
+
+  sections: [
+    {
+      h: "The Five Plural Patterns",
+      body: `German plurals follow one of these five patterns. Nouns don't tell you which — but their GENDER usually hints.
+
+PATTERN 1: -e ending (sometimes with umlaut)
+Most MASCULINE nouns take -e. Many gain umlaut (a→ä, o→ö, u→ü).
+der Tisch → die Tische (tables)
+der Stuhl → die Stühle (chairs, umlaut)
+der Baum → die Bäume (trees, umlaut)
+der Tag → die Tage (days, no umlaut)
+
+PATTERN 2: -er ending (with umlaut if possible)
+Many NEUTER and some MASCULINE nouns. Always umlaut if the stem has a/o/u.
+das Kind → die Kinder (children)
+das Buch → die Bücher (books, umlaut)
+das Haus → die Häuser (houses, umlaut)
+der Mann → die Männer (men, umlaut)
+
+PATTERN 3: -(e)n ending
+Most FEMININE nouns. Never add umlaut.
+die Frau → die Frauen (women)
+die Blume → die Blumen (flowers — feminine ending in -e only adds -n)
+die Wohnung → die Wohnungen (apartments)
+die Zeitung → die Zeitungen (newspapers)
+
+PATTERN 4: -s ending
+Foreign words (often English/French origin) and abbreviations. No umlaut.
+das Auto → die Autos
+das Hotel → die Hotels
+der Park → die Parks
+die E-Mail → die E-Mails
+
+PATTERN 5: No change (sometimes with umlaut only)
+Masculine/neuter nouns ending in -er, -en, -el, -chen, -lein. Umlaut if possible.
+der Lehrer → die Lehrer (no change)
+der Vater → die Väter (umlaut)
+der Apfel → die Äpfel (umlaut)
+das Mädchen → die Mädchen (-chen never changes)
+das Fenster → die Fenster (no change)`
+    },
+    {
+      h: "Predicting the Pattern from Gender",
+      body: `Use gender to guess the plural pattern. These rules work ~75% of the time:
+
+MASCULINE (der) → usually -e (with or without umlaut)
+der Tisch → die Tische
+der Hund → die Hunde
+der Fuß → die Füße (umlaut!)
+
+MASCULINE ending in -er/-en/-el → often NO CHANGE (pattern 5)
+der Lehrer → die Lehrer
+der Wagen → die Wagen
+der Onkel → die Onkel
+
+FEMININE (die) → almost ALWAYS -n or -en
+die Frau → die Frauen
+die Tasche → die Taschen
+die Lampe → die Lampen
+EXCEPTION: die Mutter → die Mütter (no ending, umlaut only)
+EXCEPTION: die Tochter → die Töchter (no ending, umlaut only)
+
+FEMININE ending in -heit/-keit/-ung/-schaft/-ion/-tät → always -en
+die Freiheit → die Freiheiten
+die Übung → die Übungen
+die Universität → die Universitäten
+
+NEUTER (das) → often -er (with umlaut if possible)
+das Buch → die Bücher
+das Dorf → die Dörfer
+
+NEUTER ending in -chen/-lein → NO CHANGE
+das Mädchen → die Mädchen
+das Büchlein → die Büchlein
+
+FOREIGN WORDS → -s
+das Auto → die Autos
+das Baby → die Babys`
+    },
+    {
+      h: "The Plural Always Uses 'die'",
+      body: `Regardless of the singular's gender, all plurals use die as the definite article in the nominative.
+
+der Mann → die Männer
+die Frau → die Frauen
+das Kind → die Kinder
+das Buch → die Bücher
+
+Don't be confused when you see die Männer — die is the plural article, not feminine!
+
+In the DATIVE plural, add -n to the noun (if it doesn't already end in -n or -s):
+die Männer → mit den Männern
+die Kinder → mit den Kindern
+die Frauen → mit den Frauen (already ends in -n)
+die Autos → mit den Autos (ends in -s, no change)
+
+GENITIVE plural uses der (confusingly, same as feminine singular):
+das Haus der Kinder (the children's house)`
+    },
+    {
+      h: "Memorisation Strategy",
+      body: `Because you can't fully predict plurals, ALWAYS learn a new noun with its plural form.
+
+Instead of memorising:
+das Buch ✗
+
+Memorise:
+das Buch, die Bücher ✗ (the book, the books)
+
+Standard dictionary notation:
+Buch, das, -(e)s, Bücher
+or simply:
+das Buch, Bücher (plural forms listed after the article)
+
+Common abbreviations in word lists:
+"-e" means add -e: der Tag, -e → die Tage
+"-er" means add -er: das Kind, -er → die Kinder
+"-¨er" means umlaut + -er: das Buch, ¨er → die Bücher
+"-n" means add -n: die Blume, -n → die Blumen
+"-en" means add -en: die Frau, -en → die Frauen
+"—" or no mark means no change: der Lehrer, — → die Lehrer
+"-s" means add -s: das Auto, -s → die Autos`
+    }
+  ],
+
+  vocab: [
+    ["die Mehrzahl / der Plural", "plural"],
+    ["die Einzahl / der Singular", "singular"],
+    ["die Endung, -en", "ending"],
+    ["der Umlaut, -e", "umlaut (ä, ö, ü)"],
+    ["der Stamm, Stämme", "stem (of a word)"],
+    ["verändern", "to change / alter"],
+    ["unverändert", "unchanged"],
+    ["das Muster, —", "pattern"],
+    ["regelmäßig", "regular"],
+    ["unregelmäßig", "irregular"],
+    ["die Ausnahme, -n", "exception"],
+    ["männlich", "masculine"],
+    ["weiblich", "feminine"],
+    ["sächlich", "neuter"],
+    ["das Fremdwort, Fremdwörter", "loanword / foreign word"],
+    ["die Abkürzung, -en", "abbreviation"],
+    ["memorieren / auswendig lernen", "to memorise"],
+    ["der Artikel, —", "article (grammar)"],
+    ["das Wörterbuch, Wörterbücher", "dictionary"],
+    ["der Eintrag, Einträge", "entry (in a dictionary)"],
+  ],
+
+  examples: [
+    ["Die Bücher sind auf dem Tisch.", "The books are on the table."],
+    ["Wir haben zwei Kinder.", "We have two children."],
+    ["Meine Schwestern wohnen in Berlin.", "My sisters live in Berlin."],
+    ["Ich kaufe drei Äpfel und zwei Birnen.", "I'm buying three apples and two pears."],
+    ["Die Städte in Deutschland sind schön.", "The cities in Germany are beautiful."],
+    ["Wie viele Sprachen sprichst du?", "How many languages do you speak?"],
+    ["Die Autos fahren zu schnell.", "The cars are driving too fast."],
+    ["Meine Eltern kommen morgen.", "My parents are coming tomorrow."],
+    ["Ich habe viele Freunde in Hamburg.", "I have many friends in Hamburg."],
+    ["Die Lehrer sind heute nicht da.", "The teachers aren't here today."],
+  ],
+
+  summary: [
+    "Five plural patterns: -e, -er, -(e)n, -s, no change",
+    "Gender predicts the pattern ~75% of the time",
+    "Feminine nouns almost always take -n or -en",
+    "All plurals use 'die' regardless of singular gender",
+    "Add -n in dative plural (unless noun already ends in -n or -s)",
+    "Always learn new nouns with their plural form attached",
+  ],
+
+  mistakes: [
+    "Using the original gender's article for the plural (die Frau → die Frauen, NOT 'die' because feminine, but because ALL plurals are die)",
+    "Forgetting the umlaut on patterns that require it: der Vater → die Väter (not Vater)",
+    "Adding -s to German words that shouldn't have it (der Hund → die Hunde, NOT 'Hunds')",
+    "Forgetting the -n in dative plural: mit den Kinder ✗ → mit den Kindern ✓",
+    "Assuming -e always means plural — many singular nouns end in -e (die Blume, die Lampe, etc.)",
+  ],
+
+  tips: [
+    "When you don't know the plural, try gender-based guesses: masculine → -e, feminine → -n/-en, neuter → -er",
+    "Whenever you learn a new noun, write both forms: das Kind, die Kinder — treat it as ONE piece of information",
+    "Words from English are almost always -s: das Team, die Teams; der Computer, die Computer (-er rule wins)",
+  ],
+
+  fillGaps: [
+    { sentence: "Ich habe zwei ___. (child → children)", answer: "Kinder", hint: "neuter, pattern -er: das Kind → die Kinder" },
+    { sentence: "Die ___ sind schön. (flower → flowers)", answer: "Blumen", hint: "feminine, -n ending: die Blume → die Blumen" },
+    { sentence: "Meine ___ sind müde. (parent → parents)", answer: "Eltern", hint: "Eltern is always plural (no singular form used)" },
+    { sentence: "Wir haben drei ___. (car → cars)", answer: "Autos", hint: "foreign word, pattern -s: das Auto → die Autos" },
+    { sentence: "Viele ___ wohnen in Berlin. (woman → women)", answer: "Frauen", hint: "feminine, -en ending: die Frau → die Frauen" },
+    { sentence: "Die ___ in der Stadt sind hoch. (house → houses)", answer: "Häuser", hint: "neuter, pattern -er with umlaut: das Haus → die Häuser" },
+    { sentence: "Zwei ___ stehen im Garten. (tree → trees)", answer: "Bäume", hint: "masculine, pattern -e with umlaut: der Baum → die Bäume" },
+    { sentence: "Die ___ sind heute nicht da. (teacher → teachers)", answer: "Lehrer", hint: "masculine in -er: no change — der Lehrer → die Lehrer" },
+  ],
+
+  aiOutline: null,
+},
+
+
+{
+  id: 36, unit: "A1.2 — Separable Verbs", level: "a12",
+  title: "Separable Verbs — Trennbare Verben",
+  icon: "✂️",
+  intro: "Separable verbs are a hallmark of German: a prefix attaches to a verb and carries specific meaning, but in conjugated use the prefix BREAKS OFF and goes to the end of the sentence. They're everywhere in daily speech — aufstehen (get up), einkaufen (shop), fernsehen (watch TV). Master the break-off rule and you'll understand half the sentences you hear.",
+
+  sections: [
+    {
+      h: "What's a Separable Verb?",
+      body: `A separable verb consists of: PREFIX + VERB, where the prefix has its own meaning.
+
+Examples (infinitive form — prefix attached):
+• aufstehen — to get up (auf = up + stehen = to stand)
+• einkaufen — to shop / buy (ein = in + kaufen = to buy)
+• fernsehen — to watch TV (fern = far + sehen = to see)
+• ausgehen — to go out (aus = out + gehen = to go)
+• anrufen — to call (phone) (an = at/on + rufen = to shout)
+• mitkommen — to come along (mit = with + kommen = to come)
+• zurückkommen — to come back (zurück = back + kommen = to come)
+• aufmachen — to open (auf + machen)
+• zumachen — to close (zu + machen)
+
+In the INFINITIVE form (dictionary / after modals / at end of clause): prefix stays attached.
+Ich will aufstehen. (I want to get up.)
+Er muss einkaufen. (He has to shop.)
+
+In CONJUGATED form (present tense or Präteritum): prefix BREAKS OFF and goes to the end.`
+    },
+    {
+      h: "The Break-Off Rule in Present Tense",
+      body: `When conjugating a separable verb in present tense, the PREFIX goes to the END of the clause.
+
+INFINITIVE: aufstehen (to get up)
+
+Ich stehe um 7 Uhr auf. — I get up at 7 o'clock.
+Du stehst früh auf. — You get up early.
+Er steht spät auf. — He gets up late.
+Wir stehen um 6 Uhr auf. — We get up at 6.
+Ihr steht zu spät auf. — You (pl.) get up too late.
+Sie stehen immer pünktlich auf. — They always get up on time.
+
+Pattern visualisation:
+  SUBJECT  VERB-STEM  ...rest of sentence...  PREFIX
+  Ich      stehe      um 7 Uhr                auf.
+
+More examples:
+Ich kaufe heute Brot ein. (einkaufen — I buy bread today)
+Er ruft seine Mutter an. (anrufen — He calls his mother)
+Wir kommen morgen zurück. (zurückkommen — We come back tomorrow)
+Sie macht das Fenster zu. (zumachen — She closes the window)
+Ich sehe abends fern. (fernsehen — I watch TV in the evening)`
+    },
+    {
+      h: "With Modal Verbs & in Perfekt",
+      body: `With MODAL VERBS: the separable verb goes to the end as a full infinitive (NOT separated).
+
+Ich will früh aufstehen. ✓ (NOT: Ich will auf früh stehen.)
+Er muss seine Mutter anrufen. ✓
+Wir können am Wochenende ausgehen. ✓
+Ich möchte fernsehen. ✓
+
+In PERFEKT tense: the ge- of the past participle goes BETWEEN the prefix and the verb stem.
+
+aufstehen → aufgestanden (got up)
+einkaufen → eingekauft (shopped)
+anrufen → angerufen (called)
+fernsehen → ferngesehen (watched TV)
+ausgehen → ausgegangen (went out)
+
+Perfekt examples:
+Ich bin heute früh aufgestanden. (I got up early today — sein because movement)
+Er hat seine Mutter angerufen. (He called his mother — haben)
+Wir haben gestern eingekauft. (We shopped yesterday — haben)
+
+Pattern: PREFIX + ge + STEM + ending
+• auf + ge + stand + en → aufgestanden
+• ein + ge + kauf + t → eingekauft`
+    },
+    {
+      h: "Common Separable Prefixes",
+      body: `The prefix gives the verb its specific meaning. Learn these and you can guess many verbs.
+
+auf- (up / open):
+aufstehen (get up), aufmachen (open), aufhören (stop), aufwachen (wake up), aufräumen (tidy up)
+
+ein- (in / into):
+einkaufen (shop), einladen (invite), einsteigen (get in / board), einschlafen (fall asleep)
+
+aus- (out / off):
+ausgehen (go out), aussteigen (get off / out), ausziehen (move out / take off), ausmachen (turn off)
+
+an- (on / at / start):
+anrufen (call), anfangen (begin), ankommen (arrive), anmachen (turn on), anziehen (put on / dress)
+
+mit- (with / along):
+mitkommen (come along), mitnehmen (take with), mitmachen (join in), mitbringen (bring along)
+
+zu- (closed / to):
+zumachen (close), zuhören (listen to), zuschauen (watch), zunehmen (gain weight)
+
+ab- (off / down / away):
+abfahren (depart), abholen (pick up), absagen (cancel), abnehmen (lose weight / pick up phone)
+
+zurück- (back):
+zurückkommen (come back), zurückgeben (give back), zurückfahren (drive back)
+
+vor- (before / in front):
+vorstellen (introduce), vorbereiten (prepare)
+
+weiter- (further / continue):
+weitergehen (go on), weitermachen (continue)
+
+NOTE: Some prefixes are INSEPARABLE: be-, emp-, ent-, er-, ge-, ver-, zer-, miss-.
+These NEVER separate and have NO ge- in Partizip II:
+besuchen → besucht (visited), verstehen → verstanden (understood), erzählen → erzählt (told)`
+    }
+  ],
+
+  vocab: [
+    ["aufstehen", "to get up"],
+    ["einkaufen", "to shop / buy groceries"],
+    ["fernsehen", "to watch TV"],
+    ["anrufen", "to call (phone)"],
+    ["ausgehen", "to go out"],
+    ["ankommen", "to arrive"],
+    ["abfahren", "to depart"],
+    ["mitkommen", "to come along"],
+    ["mitnehmen", "to take along"],
+    ["zurückkommen", "to come back"],
+    ["aufmachen", "to open"],
+    ["zumachen", "to close"],
+    ["anmachen", "to turn on"],
+    ["ausmachen", "to turn off"],
+    ["anziehen", "to put on (clothes)"],
+    ["ausziehen", "to take off / move out"],
+    ["einschlafen", "to fall asleep"],
+    ["aufwachen", "to wake up"],
+    ["anfangen", "to begin"],
+    ["aufhören", "to stop"],
+    ["einladen", "to invite"],
+    ["vorbereiten", "to prepare"],
+    ["der Prefix / das Präfix, -e", "prefix"],
+    ["trennbar", "separable"],
+    ["trennen", "to separate"],
+  ],
+
+  examples: [
+    ["Ich stehe jeden Tag um 7 Uhr auf.", "I get up every day at 7."],
+    ["Kommst du heute Abend mit?", "Are you coming along tonight?"],
+    ["Der Zug fährt um 8 Uhr ab.", "The train departs at 8."],
+    ["Wann rufst du mich an?", "When are you calling me?"],
+    ["Ich möchte dich zum Essen einladen.", "I'd like to invite you to dinner."],
+    ["Mach bitte das Fenster zu!", "Please close the window!"],
+    ["Sie kauft heute Gemüse ein.", "She's buying vegetables today."],
+    ["Ich habe gestern ferngesehen.", "I watched TV yesterday."],
+    ["Er ist früh aufgestanden.", "He got up early."],
+    ["Wir müssen jetzt anfangen.", "We have to start now."],
+  ],
+
+  summary: [
+    "Separable verbs: prefix + verb, with specific combined meaning",
+    "In present tense, the prefix SPLITS OFF and goes to the end of the clause",
+    "In infinitive form (after modals, at end of clause), prefix stays attached",
+    "In Perfekt, ge- goes BETWEEN the prefix and stem: aufgestanden, eingekauft",
+    "Inseparable prefixes (be-, er-, ver-, etc.) never split and have no ge-",
+  ],
+
+  mistakes: [
+    "Forgetting to split the prefix: 'Ich aufstehe um 7' ✗ → 'Ich stehe um 7 auf' ✓",
+    "Splitting after a modal: 'Ich will auf stehen' ✗ → 'Ich will aufstehen' ✓",
+    "Wrong Perfekt: 'geaufstanden' ✗ → 'aufgestanden' ✓ (ge goes between prefix and stem)",
+    "Treating inseparable prefixes as separable: 'Ich besuche morgen an' ✗ → 'Ich besuche morgen' ✓",
+    "Putting the prefix in wrong position — always the very LAST word of the clause",
+  ],
+
+  tips: [
+    "Stress in pronunciation falls on the PREFIX of separable verbs: AUFstehen, EINkaufen. Inseparable verbs stress the stem: besUchen, verstEhen",
+    "When you learn a new verb from a list, check whether its prefix is separable by stressing it aloud — if the prefix sounds stressed, it separates",
+    "Read native German texts — you'll see separations constantly, and it'll become automatic",
+  ],
+
+  fillGaps: [
+    { sentence: "Ich ___ um 7 Uhr ___. (aufstehen — I get up)", answer: "stehe ... auf", hint: "split: stehe ... auf" },
+    { sentence: "___ du heute Abend ___? (mitkommen — are you coming along?)", answer: "Kommst ... mit", hint: "inversion + split" },
+    { sentence: "Der Zug ___ um 8 Uhr ___. (abfahren — departs)", answer: "fährt ... ab", hint: "strong verb + separable: fährt ... ab" },
+    { sentence: "Ich will meine Mutter ___. (anrufen — infinitive after modal)", answer: "anrufen", hint: "after modal, infinitive stays joined" },
+    { sentence: "Er hat gestern ___. (fernsehen — past participle)", answer: "ferngesehen", hint: "ge goes between: fern + ge + sehen" },
+  ],
+
+  aiOutline: null,
+},
+
+{
+  id: 40, unit: "A1.2 — Full Mock", level: "a12",
+  title: "Goethe A1 Mock Exam",
+  icon: "🎓",
+  isExam: true,
+  intro: "The full Goethe-Zertifikat A1 format: four timed sections — Hören (listening), Lesen (reading), Schreiben (writing), Sprechen (speaking). ~65 minutes total. AI-graded writing and speaking. Pass threshold: 60% overall. This is the closest practice you can get to the real thing without sitting it.",
+  sections: [],
+  vocab: [],
+  examples: [],
+  summary: [],
+  mistakes: [],
+  tips: [],
+  aiOutline: null,
+},
+
+
+{
   id: "p7", unit: "Everyday Phrases", level: "phrases",
   title: "On the Phone",
   icon: "📞",
@@ -4743,6 +5170,452 @@ Usage: 'G wie Gustav, O wie Otto, Z wie Zacharias, I wie Ida, E wie Emil = GOZIE
     { sentence: "Auf ___!", answer: "Wiederhoeren", hint: "Phone goodbye (not Wiedersehen)" },
     { sentence: "Kann ich eine ___ hinterlassen?", answer: "Nachricht", hint: "Can I leave a MESSAGE?" },
     { sentence: "A ___ Anton.", answer: "wie", hint: "A LIKE Anton (telephone alphabet)" },
+  ],
+
+  aiOutline: null,
+},
+
+{
+  id: 37, unit: "A2.1 — Reflexive Verbs", level: "a2",
+  title: "Reflexive Verbs — sich waschen, sich freuen",
+  icon: "🪞",
+  intro: "Reflexive verbs are verbs that act on the subject itself — 'I wash MYSELF,' 'she's looking forward TO HERSELF.' They're extremely common in German daily life: sich waschen (to wash oneself), sich freuen (to look forward to), sich erinnern an (to remember). Master the reflexive pronouns and the two types of reflexive verbs, and a huge chunk of natural A2 German opens up.",
+
+  sections: [
+    {
+      h: "Reflexive Pronouns — Accusative",
+      body: `Reflexive pronouns mean 'myself, yourself, himself/herself, ourselves, yourselves, themselves.' In most reflexive verbs, the pronoun is in the ACCUSATIVE case.
+
+ACCUSATIVE REFLEXIVE PRONOUNS:
+ich    → mich
+du     → dich
+er/sie/es → sich
+wir    → uns
+ihr    → euch
+sie/Sie → sich
+
+Notice: 3rd person (er, sie, es, sie plural, Sie formal) all use SICH. 1st/2nd person reuse the regular accusative pronouns.
+
+Example: sich waschen (to wash oneself)
+Ich wasche mich. — I wash myself.
+Du wäschst dich. — You wash yourself.
+Er wäscht sich. — He washes himself.
+Wir waschen uns. — We wash ourselves.
+Ihr wascht euch. — You (pl.) wash yourselves.
+Sie waschen sich. — They/You (formal) wash themselves/yourself.
+
+POSITION: The reflexive pronoun goes right AFTER the conjugated verb.
+Ich wasche mich jeden Morgen. (I wash myself every morning.)`
+    },
+    {
+      h: "Reflexive Pronouns — Dative",
+      body: `When a reflexive verb also has a DIRECT OBJECT, the reflexive pronoun becomes DATIVE (the subject receives the action indirectly).
+
+DATIVE REFLEXIVE PRONOUNS:
+ich    → mir
+du     → dir
+er/sie/es → sich
+wir    → uns
+ihr    → euch
+sie/Sie → sich
+
+(Only ich/du forms differ from accusative — 3rd person and wir/ihr are the same.)
+
+Example: sich die Hände waschen (to wash one's hands)
+Ich wasche mir die Hände. — I wash my hands. (literally: I wash myself [indirect] the hands [direct])
+Du wäschst dir die Hände.
+Er wäscht sich die Hände.
+Wir waschen uns die Hände.
+
+Other dative-reflexive examples:
+sich etwas kaufen — to buy oneself something
+Ich kaufe mir ein neues Auto. (I'm buying myself a new car.)
+
+sich etwas ansehen — to look at something (for oneself)
+Er sieht sich den Film an. (He's watching the film.)
+
+sich etwas vorstellen — to imagine something
+Kannst du dir das vorstellen? (Can you imagine that?)`
+    },
+    {
+      h: "Common Reflexive Verbs",
+      body: `Some verbs are ONLY reflexive (they can't be used without sich). Others are normally non-reflexive but become reflexive when the action is on the self.
+
+ALWAYS REFLEXIVE (no non-reflexive version):
+sich freuen (über / auf) — to be happy about / look forward to
+  Ich freue mich auf das Wochenende. (I look forward to the weekend.)
+sich erinnern (an + acc.) — to remember
+  Erinnerst du dich an mich? (Do you remember me?)
+sich beeilen — to hurry
+  Beeil dich! (Hurry up!)
+sich erholen — to recover / rest
+  Ich muss mich erholen. (I need to rest.)
+sich verlieben (in + acc.) — to fall in love with
+  Er hat sich in sie verliebt. (He fell in love with her.)
+sich interessieren (für) — to be interested in
+  Ich interessiere mich für Kunst. (I'm interested in art.)
+sich kümmern (um) — to take care of
+  Sie kümmert sich um die Kinder. (She takes care of the children.)
+sich verabreden — to arrange to meet
+  Wir verabreden uns morgen. (We're meeting up tomorrow.)
+sich entschuldigen — to apologise
+  Ich entschuldige mich. (I apologise.)
+sich entscheiden — to decide
+  Ich kann mich nicht entscheiden. (I can't decide.)
+
+REFLEXIVE WHEN ACTION IS ON SELF:
+waschen (to wash) → sich waschen (to wash oneself)
+anziehen (to dress) → sich anziehen (to get dressed)
+ausziehen (to undress) → sich ausziehen (to undress)
+kämmen (to comb) → sich kämmen (to comb one's hair)
+rasieren (to shave) → sich rasieren (to shave oneself)
+setzen (to place) → sich setzen (to sit down)
+legen (to lay) → sich hinlegen (to lie down)`
+    },
+    {
+      h: "Reflexive Verbs with Prepositions",
+      body: `Many reflexive verbs require a specific preposition, and each preposition demands a specific case. MEMORISE the verb-preposition-case combo as one unit.
+
+sich freuen AUF + ACC. — to look forward to (future event)
+  Ich freue mich auf die Ferien. (I look forward to the holidays.)
+
+sich freuen ÜBER + ACC. — to be happy ABOUT (current/past event)
+  Er freut sich über das Geschenk. (He's happy about the gift.)
+
+sich interessieren FÜR + ACC. — to be interested in
+  Wir interessieren uns für Musik.
+
+sich erinnern AN + ACC. — to remember
+  Kannst du dich an ihn erinnern?
+
+sich kümmern UM + ACC. — to take care of
+  Sie kümmert sich um ihre Mutter.
+
+sich verlieben IN + ACC. — to fall in love with
+  Ich habe mich in Berlin verliebt.
+
+sich gewöhnen AN + ACC. — to get used to
+  Ich gewöhne mich an das Wetter.
+
+sich unterhalten ÜBER + ACC. — to talk/converse about
+  Wir unterhalten uns über Politik.
+
+sich ärgern ÜBER + ACC. — to be annoyed about
+  Ich ärgere mich über den Lärm.
+
+IN THE PERFEKT: reflexive verbs use HABEN as the auxiliary.
+Ich habe mich gefreut. (I was happy.)
+Er hat sich erinnert. (He remembered.)
+Wir haben uns entschieden. (We decided.)
+
+NOTE: In the infinitive / end-of-clause position, the reflexive pronoun still appears — it doesn't vanish.
+Ich will mich beeilen. (I want to hurry.)
+Sie möchte sich erholen. (She'd like to rest.)`
+    }
+  ],
+
+  vocab: [
+    ["sich freuen", "to be happy / look forward to"],
+    ["sich erinnern (an)", "to remember"],
+    ["sich beeilen", "to hurry"],
+    ["sich erholen", "to recover / rest"],
+    ["sich verlieben (in)", "to fall in love with"],
+    ["sich interessieren (für)", "to be interested in"],
+    ["sich kümmern (um)", "to take care of"],
+    ["sich verabreden", "to arrange to meet"],
+    ["sich entschuldigen", "to apologise"],
+    ["sich entscheiden", "to decide"],
+    ["sich setzen / sich hinsetzen", "to sit down"],
+    ["sich hinlegen", "to lie down"],
+    ["sich waschen", "to wash oneself"],
+    ["sich anziehen", "to get dressed"],
+    ["sich ausziehen", "to undress"],
+    ["sich rasieren", "to shave"],
+    ["sich kämmen", "to comb one's hair"],
+    ["sich fühlen", "to feel (e.g., ill)"],
+    ["sich unterhalten (über)", "to talk / converse about"],
+    ["sich ärgern (über)", "to be annoyed about"],
+    ["sich gewöhnen (an)", "to get used to"],
+    ["sich vorstellen", "to introduce oneself / imagine"],
+    ["das Reflexivpronomen", "reflexive pronoun"],
+    ["reflexiv", "reflexive"],
+  ],
+
+  examples: [
+    ["Ich freue mich auf das Wochenende.", "I look forward to the weekend."],
+    ["Erinnerst du dich an mich?", "Do you remember me?"],
+    ["Sie wäscht sich die Hände.", "She washes her hands."],
+    ["Beeil dich, der Zug kommt!", "Hurry, the train is coming!"],
+    ["Ich interessiere mich für Sport.", "I'm interested in sports."],
+    ["Kannst du dir das vorstellen?", "Can you imagine that?"],
+    ["Wir haben uns endlich entschieden.", "We finally decided."],
+    ["Er ärgert sich über den Chef.", "He's annoyed about the boss."],
+    ["Ich möchte mich vorstellen: Ich heiße Anna.", "I'd like to introduce myself: I'm Anna."],
+    ["Entschuldigen Sie sich bei ihr!", "Apologise to her!"],
+  ],
+
+  summary: [
+    "Reflexive pronouns: mich/dich/sich/uns/euch/sich (accusative) — 3rd person uses sich",
+    "Dative reflexive: mir/dir/sich/uns/euch/sich (only ich/du differ)",
+    "Accusative when only one object; dative when there's also a direct object",
+    "Many verbs are inherently reflexive (sich freuen, sich erinnern)",
+    "Fixed preposition+case combos: sich freuen AUF + acc., sich interessieren FÜR + acc., etc.",
+    "Perfekt: always with haben (Ich habe mich gefreut)",
+  ],
+
+  mistakes: [
+    "Forgetting sich with verbs that REQUIRE it: 'Ich freue auf...' ✗ → 'Ich freue mich auf...' ✓",
+    "Wrong case: 'Ich wasche mir' when there's no direct object ✗ → 'Ich wasche mich' ✓",
+    "Confusing 'sich freuen auf' (future) with 'sich freuen über' (present/past)",
+    "Using sein in Perfekt: 'Ich bin mich gefreut' ✗ → 'Ich habe mich gefreut' ✓",
+    "Omitting the pronoun in infinitive: 'Ich will beeilen' ✗ → 'Ich will mich beeilen' ✓",
+  ],
+
+  tips: [
+    "Learn reflexive verbs as three-part units: VERB + PRONOUN + PREPOSITION (e.g., 'sich-freuen-auf')",
+    "The distinction 'auf' (future) vs 'über' (present/past) with 'sich freuen' is the most common one in everyday speech — drill it",
+    "Whenever you hear a native say 'ich habe mich…' or 'er freut sich…' listen for the preposition — it tells you what the verb is about",
+  ],
+
+  fillGaps: [
+    { sentence: "Ich freue ___ auf die Ferien.", answer: "mich", hint: "1st person accusative reflexive: mich" },
+    { sentence: "Beeil ___!", answer: "dich", hint: "imperative du form: dich" },
+    { sentence: "Er wäscht ___ die Hände. (his hands — direct object exists)", answer: "sich", hint: "3rd person + direct object → dative sich" },
+    { sentence: "Wir interessieren ___ für Musik.", answer: "uns", hint: "1st pl. reflexive: uns" },
+    { sentence: "Sie hat ___ entschieden.", answer: "sich", hint: "3rd person reflexive: sich" },
+    { sentence: "Kannst du ___ das vorstellen? (imagine — dative)", answer: "dir", hint: "2nd person dative: dir" },
+    { sentence: "Ich ärgere ___ über den Lärm.", answer: "mich", hint: "1st person accusative: mich" },
+  ],
+
+  aiOutline: null,
+},
+
+{
+  id: 38, unit: "A2.1 — Daily Routine", level: "a2",
+  title: "Tagesablauf — Describing Your Day",
+  icon: "⏰",
+  intro: "Tagesablauf (daily routine) is one of the most practically useful topics at A2. It pulls together three skills — reflexive verbs, separable verbs, and time expressions — into one natural conversation: what you do when, from waking up to going to sleep. After this lesson you can describe your entire day in German, and understand anyone else describing theirs.",
+
+  sections: [
+    {
+      h: "The Daily Routine Verbs",
+      body: `A typical day in German uses a consistent set of verbs, most of them separable or reflexive. Here they are in the order you might use them.
+
+MORNING:
+aufwachen — to wake up (separable; sein in Perfekt)
+  Ich wache um 6 Uhr auf. (I wake up at 6.)
+aufstehen — to get up (separable; sein in Perfekt)
+  Ich stehe um halb sieben auf. (I get up at 6:30.)
+sich duschen — to shower (reflexive)
+  Ich dusche mich. (I shower.)
+sich waschen — to wash oneself (reflexive)
+  Ich wasche mich mit warmem Wasser.
+sich die Zähne putzen — to brush one's teeth (reflexive + dative)
+  Ich putze mir die Zähne.
+sich anziehen — to get dressed (reflexive + separable)
+  Ich ziehe mich an.
+frühstücken — to have breakfast (regular)
+  Ich frühstücke um 7.
+
+DAY:
+zur Arbeit gehen / fahren — to go to work
+arbeiten — to work
+Mittag essen — to have lunch
+  Ich esse um 12 zu Mittag.
+eine Pause machen — to take a break
+einkaufen gehen — to go shopping (separable inf.)
+
+EVENING:
+nach Hause kommen — to come home
+  Ich komme um 18 Uhr nach Hause.
+kochen — to cook
+zu Abend essen — to have dinner
+  Ich esse um 19 Uhr zu Abend.
+fernsehen — to watch TV (separable)
+sich entspannen — to relax (reflexive)
+ein Buch lesen — to read a book
+
+NIGHT:
+sich ausziehen — to undress (reflexive + separable)
+ins Bett gehen — to go to bed
+einschlafen — to fall asleep (separable; sein in Perfekt)
+schlafen — to sleep`
+    },
+    {
+      h: "Time Expressions for Daily Routine",
+      body: `To describe WHEN you do things, you need these time expressions.
+
+CLOCK TIME with UM:
+Ich stehe UM 7 UHR auf. (I get up at 7.)
+Er arbeitet UM 9 UHR. (He works at 9.)
+
+PARTS OF THE DAY with AM / IN DER:
+am Morgen — in the morning
+am Vormittag — mid-morning
+am Mittag — at noon
+am Nachmittag — in the afternoon
+am Abend — in the evening
+in der Nacht — at night
+in der Früh — early in the morning
+
+FREQUENCY adverbs (these go after the verb or at the start):
+immer — always
+oft — often
+manchmal — sometimes
+selten — rarely
+nie — never
+normalerweise — usually
+meistens — mostly
+
+Ich stehe meistens um 7 Uhr auf.
+Normalerweise frühstücke ich zu Hause.
+Er arbeitet oft bis 19 Uhr.
+
+DURATION with VON ... BIS:
+Ich arbeite von 9 bis 17 Uhr.
+Er schläft von 23 Uhr bis 6 Uhr.
+
+SPECIFIC DAYS with AM:
+am Montag, am Dienstag, am Mittwoch ...
+
+EVERY DAY:
+jeden Tag — every day
+jeden Morgen — every morning
+wochentags — on weekdays
+am Wochenende — on the weekend`
+    },
+    {
+      h: "Describing Your Day — Sample Text",
+      body: `Here's a model text describing a typical day. Learn the structures.
+
+"Mein Tag ist ziemlich normal. Ich wache jeden Tag um 6:30 Uhr auf. Dann stehe ich langsam auf und dusche mich. Nach dem Duschen ziehe ich mich an und putze mir die Zähne.
+
+Um 7:15 frühstücke ich. Ich trinke Kaffee und esse ein Brötchen. Um 8 Uhr fahre ich mit dem Fahrrad zur Arbeit.
+
+Ich arbeite von 9 bis 17 Uhr. In der Mittagspause esse ich mit Kollegen zu Mittag. Manchmal machen wir einen Spaziergang.
+
+Nach der Arbeit komme ich um 18 Uhr nach Hause. Ich koche Abendessen und sehe ein bisschen fern. Abends lese ich gern oder treffe mich mit Freunden.
+
+Um 23 Uhr gehe ich ins Bett. Ich schlafe normalerweise schnell ein."
+
+[TRANSLATION]
+"My day is pretty normal. I wake up every day at 6:30. Then I slowly get up and shower. After showering I get dressed and brush my teeth.
+
+At 7:15 I have breakfast. I drink coffee and eat a roll. At 8 I cycle to work.
+
+I work from 9 to 5. During the lunch break I eat with colleagues. Sometimes we take a walk.
+
+After work I come home at 6. I cook dinner and watch a bit of TV. In the evenings I like to read or meet up with friends.
+
+At 11 I go to bed. I usually fall asleep quickly."
+
+KEY STRUCTURES:
+• "Um X Uhr [VERB]..." — time first, verb second (V2 rule)
+• "Nach dem [NOUN]..." — after the ... (dative!)
+• "Von X bis Y..." — from X to Y
+• "Manchmal / Oft / Meistens..." — frequency at start
+• "Abends / Morgens..." — parts of day as adverbs`
+    },
+    {
+      h: "Asking About Someone's Day",
+      body: `Common questions to start a conversation about routine:
+
+Was machst du morgens? — What do you do in the mornings?
+Wann stehst du auf? — When do you get up?
+Um wie viel Uhr gehst du zur Arbeit? — At what time do you go to work?
+Wie lange arbeitest du? — How long do you work?
+Was isst du zum Frühstück? — What do you eat for breakfast?
+Was machst du am Abend? — What do you do in the evening?
+Wann gehst du ins Bett? — When do you go to bed?
+Wie sieht dein Alltag aus? — What does your daily life look like?
+Hast du einen festen Tagesablauf? — Do you have a fixed routine?
+
+Common answers:
+Ich stehe normalerweise um ___ auf.
+Ich fahre mit dem Bus / Auto / Zug zur Arbeit.
+Zum Frühstück esse ich ___ und trinke ___.
+Abends sehe ich fern / lese / treffe Freunde / koche.
+Am Wochenende schlafe ich länger.
+
+TIP FOR SPEAKING PRACTICE: Describe your ACTUAL day out loud in German once a week. It's one of the highest-leverage exercises for conversational fluency.`
+    }
+  ],
+
+  vocab: [
+    ["der Tagesablauf, -abläufe", "daily routine"],
+    ["der Alltag", "everyday life / daily grind"],
+    ["aufwachen", "to wake up"],
+    ["aufstehen", "to get up"],
+    ["sich duschen", "to shower"],
+    ["sich die Zähne putzen", "to brush one's teeth"],
+    ["sich anziehen", "to get dressed"],
+    ["sich ausziehen", "to undress"],
+    ["frühstücken", "to have breakfast"],
+    ["zu Mittag essen", "to have lunch"],
+    ["zu Abend essen", "to have dinner"],
+    ["eine Pause machen", "to take a break"],
+    ["zur Arbeit gehen / fahren", "to go to work"],
+    ["nach Hause kommen", "to come home"],
+    ["ins Bett gehen", "to go to bed"],
+    ["einschlafen", "to fall asleep"],
+    ["aufstehen", "to get up"],
+    ["morgens", "in the mornings (adverb)"],
+    ["mittags", "at midday"],
+    ["abends", "in the evenings"],
+    ["nachts", "at night"],
+    ["normalerweise", "usually"],
+    ["meistens", "mostly"],
+    ["manchmal", "sometimes"],
+    ["jeden Tag", "every day"],
+    ["von ... bis", "from ... to/until"],
+    ["die Mittagspause, -n", "lunch break"],
+    ["die Arbeitszeit", "working hours"],
+    ["die Freizeit", "free time"],
+  ],
+
+  examples: [
+    ["Ich stehe jeden Tag um 7 Uhr auf.", "I get up every day at 7."],
+    ["Morgens dusche ich mich und frühstücke.", "In the morning I shower and have breakfast."],
+    ["Ich arbeite von 9 bis 17 Uhr.", "I work from 9 to 5."],
+    ["Nach der Arbeit gehe ich nach Hause.", "After work I go home."],
+    ["Abends sehe ich oft fern.", "In the evening I often watch TV."],
+    ["Am Wochenende schlafe ich länger.", "On the weekend I sleep longer."],
+    ["Wann gehst du normalerweise ins Bett?", "When do you usually go to bed?"],
+    ["Ich putze mir die Zähne zweimal am Tag.", "I brush my teeth twice a day."],
+    ["Zum Frühstück esse ich ein Brötchen.", "For breakfast I eat a roll."],
+    ["Meistens koche ich zu Hause.", "I usually cook at home."],
+  ],
+
+  summary: [
+    "Daily routine combines reflexive verbs (sich duschen), separable verbs (aufstehen), and time expressions",
+    "Clock time: 'um X Uhr'; parts of day: 'am Morgen / Nachmittag', 'in der Nacht'",
+    "Frequency adverbs (immer, oft, meistens, manchmal, nie) go after the verb or at the start",
+    "Duration: 'von ... bis ...' for time ranges",
+    "V2 rule still applies: 'Um 7 Uhr stehe ich auf' — time first, conjugated verb second",
+  ],
+
+  mistakes: [
+    "Forgetting the reflexive pronoun: 'Ich dusche' → 'Ich dusche mich' (sich duschen is reflexive)",
+    "Wrong preposition: 'in Morgen' ✗ → 'am Morgen' ✓",
+    "Forgetting V2: 'Um 7 Uhr ich stehe auf' ✗ → 'Um 7 Uhr stehe ich auf' ✓",
+    "Using 'gehe' instead of 'fahre' for public transport / car: 'Ich gehe mit dem Auto' ✗ → 'Ich fahre mit dem Auto' ✓",
+    "Forgetting the separable prefix at end: 'Ich stehe um 7 Uhr' ✗ (missing 'auf') → 'Ich stehe um 7 Uhr auf' ✓",
+  ],
+
+  tips: [
+    "Describe your real day out loud in German every evening as a daily self-practice — it builds fluency fast",
+    "Make flashcards pairing each daily action with its time: 'um 7 → aufstehen', 'um 8 → frühstücken', etc.",
+    "Listen to German podcasts or vlogs about 'Mein Alltag' or 'Mein Morgen' — hear real natives describing routine",
+  ],
+
+  fillGaps: [
+    { sentence: "Ich ___ jeden Morgen um 7 Uhr ___. (get up)", answer: "stehe ... auf", hint: "separable: stehe ... auf" },
+    { sentence: "Morgens dusche ich ___. (myself)", answer: "mich", hint: "sich duschen is reflexive accusative" },
+    { sentence: "Ich arbeite ___ 9 ___ 17 Uhr.", answer: "von ... bis", hint: "duration: von X bis Y" },
+    { sentence: "___ Abend sehe ich fern.", answer: "Am", hint: "am + part of day: am Abend" },
+    { sentence: "Ich putze ___ die Zähne. (my teeth — dative)", answer: "mir", hint: "reflexive dative because 'die Zähne' is the direct object" },
+    { sentence: "___ gehst du ins Bett?", answer: "Wann", hint: "When — question word" },
+    { sentence: "Ich ___ meistens schnell ein. (fall asleep, separable)", answer: "schlafe", hint: "einschlafen splits: schlafe ... ein" },
   ],
 
   aiOutline: null,
@@ -5113,7 +5986,7 @@ Ich habe Ottonova / TK / DAK als Versicherung. — I have Ottonova / TK / DAK as
 },
 
 {
-  id: 23, unit: "A2.1 — Lesson 3", level: "a2",
+  id: 23, unit: "A1.2 — Lesson 11", level: "a12",
   title: "Perfekt — Past Tense with haben",
   icon: "✅",
   intro: "The Perfekt is the most important past tense in spoken and written everyday German. While English has multiple past tenses, German speakers almost always use Perfekt to talk about past events in conversation. This lesson covers Perfekt with haben — the majority of verbs. Sein verbs are in Lesson 24.",
@@ -5280,7 +6153,7 @@ Wir haben keine Zeit gehabt. — We didn't have time. (kein before noun)`
 },
 
 {
-  id: 24, unit: "A2.1 — Lesson 4", level: "a2",
+  id: 24, unit: "A1.2 — Lesson 12", level: "a12",
   title: "Perfekt with sein — Movement & Change",
   icon: "🚶",
   intro: "A minority of verbs form their Perfekt with sein instead of haben. These are mostly verbs of movement from one place to another, or verbs describing a change of state. Once you know this list, you have complete Perfekt capability.",
@@ -5570,7 +6443,7 @@ Wann landet der Flug aus Hamburg? — When does the flight from Hamburg land?`
 },
 
 {
-  id: 25, unit: "A2.1 — Lesson 5", level: "a2",
+  id: 25, unit: "A2.1 — Lesson 3", level: "a2",
   title: "Weather, Nature & The Environment",
   icon: "🌦️",
   intro: "Weather is genuinely important in Germany — and one of the most universal conversation topics (Smalltalk). This lesson covers complete weather vocabulary, seasons in context, nature and environment terms, cardinal directions, and how to understand German weather forecasts.",
@@ -5757,7 +6630,7 @@ das Treibhausgas — greenhouse gas`
 },
 
 {
-  id: 26, unit: "A2.1 — Lesson 6", level: "a2",
+  id: 26, unit: "A2.1 — Lesson 4", level: "a2",
   title: "Travel, Transport & Giving Directions",
   icon: "🗺️",
   intro: "Giving and understanding directions is a key real-world skill. This lesson covers directional vocabulary, prepositions of location, compass navigation, and public transport language — all with an emphasis on sentences you'll actually use.",
@@ -5904,7 +6777,7 @@ per Anhalter — hitchhiking`
 },
 
 {
-  id: 27, unit: "A2.1 — Lesson 7", level: "a2",
+  id: 27, unit: "A2.1 — Lesson 5", level: "a2",
   title: "Simple Past (Präteritum) — The Storytelling Tense",
   icon: "📖",
   intro: "While the Perfekt is used in conversation, the Präteritum is used in writing, formal narration, journalism, and literature. More importantly, the verbs sein, haben, and all modal verbs use Präteritum even in everyday speech — making it essential even at A2 level.",
@@ -6066,6 +6939,21 @@ Ich arbeitete gestern bis 20 Uhr. — I worked until 8pm yesterday.
     { sentence: "Das ___ sehr gut.", answer: "war", hint: "that WAS very good (sein Praeteritum)" },
   ],
 
+  aiOutline: null,
+},
+
+{
+  id: 41, unit: "A2.1 — Checkpoint", level: "a2",
+  title: "A2.1 Checkpoint Exam",
+  icon: "🎯",
+  isExam: true,
+  intro: "A mid-A2 checkpoint to verify your early-A2 skills: reflexive verbs, daily routine, Perfekt/Präteritum of common verbs, weather, health, travel, and core A2 vocabulary. 20 mixed questions, 20 minutes. Pass: 70%. Use this to identify weak spots before the full A2 mock exam.",
+  sections: [],
+  vocab: [],
+  examples: [],
+  summary: [],
+  mistakes: [],
+  tips: [],
   aiOutline: null,
 },
 
@@ -6366,7 +7254,7 @@ Es wird immer kaelter. — It's getting colder and colder.`
 },
 
 {
-  id: 30, unit: "A2.2 — Lesson 3", level: "a2",
+  id: 30, unit: "A1.2 — Lesson 13", level: "a12",
   title: "The Imperative — Commands & Requests",
   icon: "📢",
   intro: "The imperative is how you give instructions, make requests, and tell people what to do. German has three imperative forms corresponding to du, ihr, and Sie. Once you understand the patterns, you can give any instruction clearly and appropriately.",
@@ -6653,7 +7541,7 @@ die Muelltrennung — waste separation`
 },
 
 {
-  id: 31, unit: "A2.2 — Lesson 4", level: "a2",
+  id: 31, unit: "A2.2 — Lesson 3", level: "a2",
   title: "Conjunctions & Complex Sentences",
   icon: "🔗",
   intro: "Conjunctions connect clauses and allow you to express relationships between ideas — cause, contrast, condition, time. German has two categories: coordinating conjunctions (no word order change) and subordinating conjunctions (verb goes to the END). Mastering these elevates your German from simple sentences to genuine fluency.",
@@ -6814,7 +7702,7 @@ Both mean roughly the same but with different structure.`
 },
 
 {
-  id: 32, unit: "A2.2 — Lesson 5", level: "a2",
+  id: 32, unit: "A2.2 — Lesson 4", level: "a2",
   title: "Dative Deep Dive — Dative Verbs",
   icon: "🎁",
   intro: "Certain German verbs always take a dative object — even when they feel like they should be accusative. This is because German encodes the relationship differently than English. Learning these verbs unlocks natural-sounding German and eliminates a major source of errors.",
@@ -6964,7 +7852,7 @@ SUMMARY OF ALL DATIVE CONTEXTS:
 },
 
 {
-  id: 33, unit: "A2.2 — Lesson 6", level: "a2",
+  id: 33, unit: "A2.2 — Lesson 5", level: "a2",
   title: "Genitive Case & All Four Cases Review",
   icon: "🏆",
   intro: "The genitive case expresses possession and association. While informally replaced by 'von' in speech, the genitive appears constantly in writing, formal texts, and fixed phrases. This lesson completes your four-case system and reviews the entire German case system with a comprehensive comparison table.",
