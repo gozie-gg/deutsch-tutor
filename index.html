@@ -334,14 +334,19 @@ function startListen(cb) {
 let lastProvider = '';
 async function callApi(system, user, history = []) {
   const msgs = history.length ? [...history, {role:'user',content:user}] : [{role:'user',content:user}];
-  const r = await fetch('/api/chat', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ system, messages: msgs, max_tokens: 2000 })
-  });
-  const d = await r.json();
-  if (d.provider) lastProvider = d.provider;
-  return d.content?.[0]?.text || '';
+  try {
+    const r = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ system, messages: msgs, max_tokens: 2000 })
+    });
+    const d = await r.json();
+    if (d.provider) lastProvider = d.provider;
+    return d.content?.[0]?.text || '';
+  } catch (err) {
+    console.error('callApi error:', err);
+    return '';
+  }
 }
 
 // ─── LESSON GENERATION ────────────────────────────────────────────────────────
@@ -482,7 +487,16 @@ async function startPhase(phase) {
   } else if (['easy','medium','hard','extraHard'].includes(phase)) {
     STATE.exLoading = true; render();
     const count = EXERCISE_COUNTS[phase];
-    STATE.exercises = await generateExercises(STATE.lesson, phase, count);
+    try {
+      STATE.exercises = await generateExercises(STATE.lesson, phase, count);
+    } catch {
+      STATE.exercises = [{
+        question: `Translate to German: "I am learning German."`,
+        answer: phase === 'easy' ? 'B' : 'Ich lerne Deutsch.',
+        hint: phase === 'medium' ? 'Word bank: Ich, lerne, Deutsch' : '',
+        options: phase === 'easy' ? ['Ich bin Deutsch', 'Ich lerne Deutsch', 'Ich bin Student', 'Ich habe Deutsch'] : []
+      }];
+    }
     STATE.exLoading = false; render();
   } else if (phase === 'conv') {
     STATE.msgs = []; STATE.convLoading = true; render();
