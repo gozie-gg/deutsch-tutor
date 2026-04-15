@@ -67,9 +67,13 @@ export default async function handler(req, res) {
 
   let lastError = null;
 
+  const triedProviders = [];
+
   for (const provider of PROVIDERS) {
     const key = provider.key();
-    if (!key) continue; // skip if env var not set
+    // skip if env var not set, whitespace-only, or still a placeholder (contains "xxxxxxxx")
+    if (!key || !key.trim() || /xxxxxxxx/i.test(key)) continue;
+    triedProviders.push(provider.name);
 
     try {
       const response = await fetch(provider.url, {
@@ -119,6 +123,7 @@ export default async function handler(req, res) {
   // All providers failed
   return res.status(503).json({
     error: "All providers unavailable",
-    detail: lastError,
+    detail: lastError || "No API keys configured. Set at least one of: NVIDIA_API_KEY, CEREBRAS_API_KEY, GROQ_API_KEY, GOOGLE_API_KEY, ZAI_API_KEY, OPENROUTER_API_KEY in Vercel env vars.",
+    tried: triedProviders,
   });
 }
